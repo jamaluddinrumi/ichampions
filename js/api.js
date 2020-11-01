@@ -24,31 +24,32 @@ function error(error) {
 }
 
 // Blok kode untuk melakukan request data json
-function getArticles() {
+function getTeams() {
   if ("caches" in window) {
-    caches.match(base_url + "articles").then(function (response) {
+    caches.match(base_url + "competitions/2001/teams").then(function (response) {
       if (response) {
         response.json().then(function (data) {
-          let articlesHTML = "";
-          data.result.forEach(function (article) {
-            articlesHTML += `
+          let teamsHTML = "";
+          data.teams.forEach(function (team) {
+            teamsHTML += `
               <div class="card">
-                <a href="./article.html?id=${article.id}">
+                <a href="./team.html?id=${team.id}" class="team-card-link">
                   <div class="card-image waves-effect waves-block waves-light">
-                    <img src="${article.crestUrl ? article.crestUrl : 'https://via.placeholder.com/266?text=No+Image'}" />
+                    <img src="${team.crestUrl ? team.crestUrl : 'https://via.placeholder.com/266?text=No+Image'}" />
                   </div>
                 </a>
                 <div class="card-content">
-                  <a href="./article.html?id=${article.id}">
-                    <span class="card-title truncate font-bold">${article.name}</span>
+                  <a href="./team.html?id=${team.id}">
+                    <span class="card-title truncate font-bold">${team.name}</span>
                   </a>
-                  <p class="italic text-opacity-50">${article.founded}</p>
+                  <p class="italic text-opacity-50">${team.founded}</p>
                 </div>
               </div>
             `;
           });
           // Sisipkan komponen card ke dalam elemen dengan id #content
-          document.getElementById("articles").innerHTML = articlesHTML;
+          let teams = document.getElementById("teams");
+          teams.innerHTML = teamsHTML;
         });
       }
     });
@@ -64,46 +65,121 @@ function getArticles() {
     .then(json)
     .then(function (data) {
       // Objek/array JavaScript dari response.json() masuk lewat data.
-      console.log(data);
+      // console.log(data);
       // Menyusun komponen card artikel secara dinamis
-      let articlesHTML = "";
-      data.teams.forEach(function (article) {
-        articlesHTML += `
+      let teamsHTML = "";
+      data.teams.forEach(function (team) {
+        teamsHTML += `
               <div class="card">
-                <a href="./article.html?id=${article.id}">
+                <a href="./team.html?id=${team.id}" class="team-card-link">
                   <div class="card-image waves-effect waves-block waves-light">
-                    <img src="${article.crestUrl ? article.crestUrl : 'https://via.placeholder.com/266?text=No+Image'}" />
+                    <img src="${team.crestUrl ? team.crestUrl : 'https://via.placeholder.com/266?text=No+Image'}" />
                   </div>
                 </a>
                 <div class="card-content">
-                  <a href="./article.html?id=${article.id}">
-                    <span class="card-title truncate font-bold">${article.name}</span>
+                  <a href="./team.html?id=${team.id}">
+                    <span class="card-title truncate font-bold">${team.name}</span>
                   </a>
-                  <p class="italic text-opacity-50">${article.founded}</p>
+                  <p class="italic text-opacity-50">${team.founded}</p>
                 </div>
               </div>
             `;
       });
       // Sisipkan komponen card ke dalam elemen dengan id #content
-      document.getElementById("articles").innerHTML = articlesHTML;
+      let teams = document.getElementById("teams");
+      teams.innerHTML = teamsHTML;
     })
     .catch(error);
 }
 
-function getArticleById() {
+function getTeamByID() {
   return new Promise(function (resolve, reject) {
     // Ambil nilai query parameter (?id=)
     let urlParams = new URLSearchParams(window.location.search);
     let idParam = urlParams.get("id");
 
     if ("caches" in window) {
-      caches.match(base_url + "article/" + idParam).then(function (response) {
+      // if (false) {
+      caches.match(base_url + "teams/" + idParam).then(function (response) {
         if (response) {
           response.json().then(function (data) {
-            let articleHTML = `
+            let teamHTML = `
+              <div class="row">
+                <div class="col s12 m7" id="team">
+                  <div class="card">
+                    <div class="card-image waves-effect waves-block waves-light">
+                      <img src="${data.crestUrl ? data.crestUrl : 'https://via.placeholder.com/266?text=No+Image'}" />
+                    </div>
+                    <div class="card-content">
+                      <table>
+                        <tbody>
+                          <tr>
+                            <td>Name</td>
+                            <td>${data.name}</td>
+                          </tr>
+                          <tr>
+                            <td>Address</td>
+                            <td>${data.address}</td>
+                          </tr>
+                          <tr>
+                            <td>Email</td>
+                            <td><a href="mailto:${data.email}">${data.email}</a></td>
+                          </tr>
+                          <tr>
+                            <td>Phone</td>
+                            <td>${data.address}</td>
+                          </tr>
+                          <tr>
+                            <td>Short Name</td>
+                            <td>${data.shortName}</td>
+                          </tr>
+                          <tr>
+                            <td>Tla</td>
+                            <td>${data.tla}</td>
+                          </tr>
+                          <tr>
+                            <td>Venue</td>
+                            <td>${data.venue}</td>
+                          </tr>
+                          <tr>
+                            <td>Website</td>
+                            <td><a href="${data.website}">${data.website}</a></td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          `;
+            // Sisipkan komponen card ke dalam elemen dengan id #content
+            document.getElementById("body-content").innerHTML = teamHTML;
+
+            // Kirim objek data hasil parsing json agar bisa disimpan ke indexed db
+            resolve(data);
+          });
+        }
+      });
+    }
+
+    fetch(base_url + "teams/" + idParam, {
+      method: "POST",
+      headers: {
+        "X-Auth-Token": "de8dfc6cf270480287d33652b602510b",
+      },
+    })
+      .then(status)
+      .then(json)
+      .then(function (data) {
+        // Objek JavaScript dari response.json() masuk lewat letiabel data.
+        // console.log(data);
+        // Menyusun komponen card artikel secara dinamis
+        let teamHTML = `
+        <div class="row">
+          <div class="col s12 m7" id="team">
             <div class="card">
               <div class="card-image waves-effect waves-block waves-light">
-                <img src="${data.crestUrl}" />
+                <img src="${data.crestUrl ? data.crestUrl : 'https://via.placeholder.com/266?text=No+Image'}" />
               </div>
               <div class="card-content">
                 <table>
@@ -118,7 +194,7 @@ function getArticleById() {
                     </tr>
                     <tr>
                       <td>Email</td>
-                      <td>${data.email}</td>
+                      <td><a href="mailto:${data.email}">${data.email}</a></td>
                     </tr>
                     <tr>
                       <td>Phone</td>
@@ -138,87 +214,18 @@ function getArticleById() {
                     </tr>
                     <tr>
                       <td>Website</td>
-                      <td>${data.website}</td>
+                      <td><a href="${data.website}">${data.website}</a></td>
                     </tr>
                   </tbody>
                 </table>
               </div>
             </div>
-          `;
-            // Sisipkan komponen card ke dalam elemen dengan id #content
-            document.getElementById("body-content").innerHTML = articleHTML;
-
-            // Kirim objek data hasil parsing json agar bisa disimpan ke indexed db
-            resolve(data);
-          });
-        }
-      });
-    }
-
-    fetch(base_url + "teams/" + idParam, {
-      method: "POST",
-      headers: {
-        "X-Auth-Token": "de8dfc6cf270480287d33652b602510b",
-      },
-    })
-      .then(status)
-      .then(json)
-      .then(function (data) {
-        // Objek JavaScript dari response.json() masuk lewat letiabel data.
-        console.log(data);
-        // Menyusun komponen card artikel secara dinamis
-        let articleHTML = `
-          <div class="row">
-            <div class="col s12 m7" id="articles">
-              <div class="card">
-                <div class="card-image waves-effect waves-block waves-light">
-                  <img src="${data.crestUrl ? data.crestUrl : 'https://via.placeholder.com/266?text=No+Image'}" />
-                </div>
-                <div class="card-content">
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td>Name</td>
-                        <td>${data.name}</td>
-                      </tr>
-                      <tr>
-                        <td>Address</td>
-                        <td>${data.address}</td>
-                      </tr>
-                      <tr>
-                        <td>Email</td>
-                        <td>${data.email}</td>
-                      </tr>
-                      <tr>
-                        <td>Phone</td>
-                        <td>${data.address}</td>
-                      </tr>
-                      <tr>
-                        <td>Short Name</td>
-                        <td>${data.shortName}</td>
-                      </tr>
-                      <tr>
-                        <td>Tla</td>
-                        <td>${data.tla}</td>
-                      </tr>
-                      <tr>
-                        <td>Venue</td>
-                        <td>${data.venue}</td>
-                      </tr>
-                      <tr>
-                        <td>Website</td>
-                        <td>${data.website}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
           </div>
+        </div>
         `;
         // Sisipkan komponen card ke dalam elemen dengan id #content
         let body_content = document.getElementById("body-content");
-        body_content.innerHTML = articleHTML;
+        body_content.innerHTML = teamHTML;
 
         // Kirim objek data hasil parsing json agar bisa disimpan ke indexed db
         resolve(data);
@@ -226,53 +233,53 @@ function getArticleById() {
   });
 }
 
-function getSavedArticles() {
-  getAll().then(function (articles) {
-    console.log(articles);
+function getSavedTeams() {
+  getAll().then(function (teams) {
+    console.log(teams);
     // Menyusun komponen card artikel secara dinamis
-    let articlesHTML = "";
-    articles.forEach(function (article) {
-      let description = article.post_content.substring(0, 100);
+    let teamsHTML = "";
+    teams.forEach(function (team) {
+      let description = team.post_content.substring(0, 100);
 
-      articlesHTML += `
+      teamsHTML += `
                   <div class="card">
-                    <a href="./article.html?id=${article.ID}&saved=true">
+                    <a href="./team.html?id=${team.ID}&saved=true">
                       <div class="card-image waves-effect waves-block waves-light">
-                        <img src="${article.crestUrl}" />
+                        <img src="${team.crestUrl}" />
                       </div>
                     </a>
                     <div class="card-content">
-                      <span class="card-title truncate">${article.post_title}</span>
+                      <span class="card-title truncate">${team.post_title}</span>
                       <p>${description}</p>
                     </div>
                   </div>
                 `;
     });
     // Sisipkan komponen card ke dalam elemen dengan id #content
-    document.getElementById("body-content").innerHTML = articlesHTML;
+    document.getElementById("body-content").innerHTML = teamsHTML;
   });
 }
 
-function getSavedArticleById() {
+function getSavedTeamById() {
   let urlParams = new URLSearchParams(window.location.search);
   let idParam = urlParams.get("id");
 
-  getById(idParam).then(function (article) {
-    let articleHTML = `
+  getById(idParam).then(function (team) {
+    let teamHTML = `
     <div class="card">
       <div class="card-image waves-effect waves-block waves-light">
-        <img src="${article.cover}" />
+        <img src="${team.cover}" />
       </div>
       <div class="card-content">
-        <span class="card-title">${article.post_title}</span>
-        ${snarkdown(article.post_content)}
+        <span class="card-title">${team.post_title}</span>
+        ${snarkdown(team.post_content)}
       </div>
     </div>
   `;
 
     // Sisipkan komponen card ke dalam elemen dengan id #content
     let body_content = document.getElementById("body-content");
-    body_content.innerHTML = articleHTML;
+    body_content.innerHTML = teamHTML;
 
     // add  remove favorite team button
     let remove_button_html = `

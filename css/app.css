@@ -16,4 +16,10 @@ td {
 
 tr > td:first-child {
   font-weight: bold;
+  white-space: nowrap;
+}
+
+td > a {
+  text-decoration: underline;
+  font-style: italic;
 }

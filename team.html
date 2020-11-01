@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <title>Team Detail</title>
-  <meta name="description" content="My first PWA" />
+  <meta name="description" content="Champions League 2019/2020 Team Detail" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="css/materialize.min.css" />
   <link rel="stylesheet" href="css/app.css" />
@@ -19,7 +19,7 @@
   <nav class="teal lighten-1" role="navigation">
     <div class="nav-wrapper container">
       <a href="/#home" class="brand-logo" id="logo-container">Team Detail</a>
-      <a href="/#home" class="sidenav-trigger" data-target="nav-mobile">
+      <a href="/#home" class="sidenav-trigger">
         <i class="large material-icons">arrow_back</i>
       </a>
       <ul class="topnav right hide-on-med-and-down"></ul>
@@ -39,7 +39,6 @@
   <script src="js/materialize.min.js"></script>
   <script src="js/idb.js"></script>
   <script src="js/db.js"></script>
-  <script src="js/nav.js"></script>
   <script src="js/api.js"></script>
 
   <script>
@@ -58,28 +57,33 @@
     } else {
       console.log("ServiceWorker belum didukung browser ini.");
     }
-    document.addEventListener("DOMContentLoaded", function () {
-      var urlParams = new URLSearchParams(window.location.search);
-      var isFromSaved = urlParams.get("saved");
 
-      var save = document.getElementById("save");
+    document.addEventListener("DOMContentLoaded", function () {
+      let urlParams = new URLSearchParams(window.location.search);
+      let isFromSaved = urlParams.get("saved");
+
+      let save = document.getElementById("save");
 
       if (isFromSaved) {
+        console.log('is saved');
         // Hide fab jika dimuat dari indexed db
         save.style.display = 'none';
 
         // ambil artikel lalu tampilkan
-        getSavedArticleById();
+        getSavedTeamById();
       } else {
-        var item = getArticleById();
+        ('is not saved');
+        let item = getTeamByID();
       }
 
       save.onclick = function () {
         console.log("Tombol FAB di klik.");
-        item.then(function (article) {
-          saveForLater(article);
+        item.then(function (team) {
+          saveForLater(team);
         });
       };
+
+      let page = window.location.hash.substr(1);
     });
   </script>
 </body>
