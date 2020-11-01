@@ -34,6 +34,9 @@
     <a class="btn-floating btn-large green" id="save">
       <i class="large material-icons">add_circle</i>
     </a>
+    <a class="btn-floating btn-large red hidden" id="remove">
+      <i class="large material-icons">remove_circle</i>
+    </a>
   </div>
 
   <script src="js/materialize.min.js"></script>
@@ -61,25 +64,50 @@
     document.addEventListener("DOMContentLoaded", function () {
       let urlParams = new URLSearchParams(window.location.search);
       let isFromSaved = urlParams.get("saved");
+      let idParam = urlParams.get("id");
 
-      let save = document.getElementById("save");
+      let save_button = document.getElementById("save");
+      let remove_button = document.getElementById("remove");
+
+      let item = Object;
+
+      let ada = Boolean;
+
+      let storeAllKeys = allKeys();
+      storeAllKeys.then(function (response) {
+        response.forEach(key => {
+          if (idParam == key) {
+            save_button.classList.add('hidden');
+            remove_button.classList.remove('hidden');
+          }
+        });
+      })
 
       if (isFromSaved) {
-        console.log('is saved');
-        // Hide fab jika dimuat dari indexed db
         save.style.display = 'none';
 
-        // ambil artikel lalu tampilkan
         getSavedTeamById();
       } else {
-        ('is not saved');
-        let item = getTeamByID();
+        item = getTeamById();
       }
 
-      save.onclick = function () {
-        console.log("Tombol FAB di klik.");
+      save_button.onclick = function () {
+        console.log("Tombol save diklik.");
         item.then(function (team) {
+          // console.log(item);
           saveForLater(team);
+          save_button.classList.add('hidden');
+          remove_button.classList.remove('hidden');
+        });
+      };
+
+      remove_button.onclick = function () {
+        console.log("Tombol remove diklik.");
+        item.then(function (team) {
+          // console.log(item);
+          removeById(team);
+          save_button.classList.remove('hidden');
+          remove_button.classList.add('hidden');
         });
       };
 

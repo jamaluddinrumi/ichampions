@@ -1,38 +1,37 @@
-let dbPromised = idb.open("news-reader", 1, function(upgradeDb) {
-  let articlesObjectStore = upgradeDb.createObjectStore("articles", {
-    keyPath: "ID"
+let dbPromised = idb.open("ichampions-1", 1, function(upgradeDb) {
+  let teamsObjectStore = upgradeDb.createObjectStore("teams", {
+    keyPath: "id",
+    autoIncrement: false
   });
-  articlesObjectStore.createIndex("post_title", "post_title", {
-    unique: false
-  });
+  teamsObjectStore.createIndex("id", "id", { unique: true });
 });
 
-function removeArticleById(id) {
-  dbPromised
-    .then(function(db) {
-      let tx = db.transaction("articles", "readwrite");
-      let store = tx.objectStore("articles");
-      console.log(id);
-      store.delete(id);
-      return tx.complete;
-    })
-    .then(function() {
-      console.log("Artikel berhasil dihapus.");
-      window.location.href = "/#saved";
-    });
+function allKeys() {
+  return new Promise(function(resolve, reject) {
+    dbPromised
+      .then(function(db) {
+        let tx = db.transaction("teams", "readonly");
+        let store = tx.objectStore("teams");
+        return store.getAllKeys();
+      })
+      .then(function(allKeys) {
+        resolve(allKeys);
+      });
+  });
 }
 
-function saveForLater(article) {
+function saveForLater(team) {
   dbPromised
     .then(function(db) {
-      let tx = db.transaction("articles", "readwrite");
-      let store = tx.objectStore("articles");
-      console.log(article);
-      store.add(article.result);
+      let tx = db.transaction("teams", "readwrite");
+      let store = tx.objectStore("teams");
+      // console.log(team);
+      // console.log(team.id);
+      store.add(team);
       return tx.complete;
     })
     .then(function() {
-      console.log("Artikel berhasil di simpan.");
+      console.log("Team berhasil disimpan.");
     });
 }
 
@@ -40,12 +39,12 @@ function getAll() {
   return new Promise(function(resolve, reject) {
     dbPromised
       .then(function(db) {
-        let tx = db.transaction("articles", "readonly");
-        let store = tx.objectStore("articles");
+        let tx = db.transaction("teams", "readonly");
+        let store = tx.objectStore("teams");
         return store.getAll();
       })
-      .then(function(articles) {
-        resolve(articles);
+      .then(function(teams) {
+        resolve(teams);
       });
   });
 }
@@ -53,14 +52,14 @@ function getAll() {
 function getAllByTitle(title) {
   dbPromised
     .then(function(db) {
-      let tx = db.transaction("articles", "readonly");
-      let store = tx.objectStore("articles");
+      let tx = db.transaction("teams", "readonly");
+      let store = tx.objectStore("teams");
       let titleIndex = store.index("post_title");
       let range = IDBKeyRange.bound(title, title + "\uffff");
       return titleIndex.getAll(range);
     })
-    .then(function(articles) {
-      console.log(articles);
+    .then(function(teams) {
+      console.log(teams);
     });
 }
 
@@ -68,12 +67,34 @@ function getById(id) {
   return new Promise(function(resolve, reject) {
     dbPromised
       .then(function(db) {
-        let tx = db.transaction("articles", "readonly");
-        let store = tx.objectStore("articles");
+        let tx = db.transaction("teams", "readonly");
+        console.log('id');
+        console.log(id);
+        console.log('tx');
+        console.log(tx);
+        let store = tx.objectStore("teams");
+        console.log('store');
+        console.log(store);
         return store.get(id);
       })
-      .then(function(article) {
-        resolve(article);
+      .then(function(team) {
+        console.log('resolve');
+        console.log(team);
+        resolve(team);
       });
   });
+}
+
+function removeById(team) {
+  dbPromised
+    .then(function(db) {
+      let tx = db.transaction("teams", "readwrite");
+      let store = tx.objectStore("teams");
+      console.log(team);
+      store.delete(team.id);
+      return tx.complete;
+    })
+    .then(function() {
+      console.log("Team berhasil dihapus.");
+    });
 }

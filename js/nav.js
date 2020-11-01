@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (page === "home") {
           getTeams();
         } else if (page === "saved") {
-          getSavedArticles();
+          getSavedTeams();
         }
 
         if (this.status == 200) {
