@@ -6,15 +6,16 @@
     <meta name="description" content="My first PWA" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="css/materialize.min.css" />
+    <link rel="stylesheet" href="css/app.css" />
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#00897B" />
+    <meta name="theme-color" content="#000000" />
   </head>
   <body>
     <!-- Navigasi -->
     <nav class="teal lighten-1" role="navigation">
       <div class="nav-wrapper container">
-        <a href="#" class="brand-logo" id="logo-container">iChampions</a>
-        <a href="#" class="sidenav-trigger" data-target="nav-mobile">&#9776;</a>
+        <a href="/#home" class="brand-logo" id="logo-container">iChampions</a>
+        <a href="/#home" class="sidenav-trigger" data-target="nav-mobile">&#9776;</a>
 
         <ul class="topnav right hide-on-med-and-down"></ul>
         <ul class="sidenav" id="nav-mobile"></ul>
@@ -50,9 +51,7 @@
 
       // REQUEST API UNTUK PERTAMA KALI
       document.addEventListener("DOMContentLoaded", function() {
-        var page = window.location.hash.substr(1);
-
-
+        let page = window.location.hash.substr(1);
       });
     </script>
   </body>
