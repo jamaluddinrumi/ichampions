@@ -1,4 +1,4 @@
-var base_url = "https://readerapi.codepolitan.com/";
+let base_url = "https://readerapi.codepolitan.com/";
 
 // Blok kode yang akan di panggil jika fetch berhasil
 function status(response) {
@@ -29,7 +29,7 @@ function getArticles() {
     caches.match(base_url + "articles").then(function(response) {
       if (response) {
         response.json().then(function(data) {
-          var articlesHTML = "";
+          let articlesHTML = "";
           data.result.forEach(function(article) {
             articlesHTML += `
                   <div class="card">
@@ -59,7 +59,7 @@ function getArticles() {
       // Objek/array JavaScript dari response.json() masuk lewat data.
 
       // Menyusun komponen card artikel secara dinamis
-      var articlesHTML = "";
+      let articlesHTML = "";
       data.result.forEach(function(article) {
         articlesHTML += `
               <div class="card">
@@ -84,14 +84,14 @@ function getArticles() {
 function getArticleById() {
   return new Promise(function(resolve, reject) {
     // Ambil nilai query parameter (?id=)
-    var urlParams = new URLSearchParams(window.location.search);
-    var idParam = urlParams.get("id");
+    let urlParams = new URLSearchParams(window.location.search);
+    let idParam = urlParams.get("id");
 
     if ("caches" in window) {
       caches.match(base_url + "article/" + idParam).then(function(response) {
         if (response) {
           response.json().then(function(data) {
-            var articleHTML = `
+            let articleHTML = `
             <div class="card">
               <div class="card-image waves-effect waves-block waves-light">
                 <img src="${data.result.cover}" />
@@ -116,10 +116,10 @@ function getArticleById() {
       .then(status)
       .then(json)
       .then(function(data) {
-        // Objek JavaScript dari response.json() masuk lewat variabel data.
+        // Objek JavaScript dari response.json() masuk lewat letiabel data.
         // console.log(data);
         // Menyusun komponen card artikel secara dinamis
-        var articleHTML = `
+        let articleHTML = `
           <div class="card">
             <div class="card-image waves-effect waves-block waves-light">
               <img src="${data.result.cover}" />
@@ -142,9 +142,9 @@ function getSavedArticles() {
   getAll().then(function(articles) {
     console.log(articles);
     // Menyusun komponen card artikel secara dinamis
-    var articlesHTML = "";
+    let articlesHTML = "";
     articles.forEach(function(article) {
-      var description = article.post_content.substring(0, 100);
+      let description = article.post_content.substring(0, 100);
 
       articlesHTML += `
                   <div class="card">
@@ -168,12 +168,12 @@ function getSavedArticles() {
 }
 
 function getSavedArticleById() {
-  var urlParams = new URLSearchParams(window.location.search);
-  var idParam = urlParams.get("id");
-  
+  let urlParams = new URLSearchParams(window.location.search);
+  let idParam = urlParams.get("id");
+
   getById(idParam).then(function(article) {
     articleHTML = '';
-    var articleHTML = `
+    let articleHTML = `
     <div class="card">
       <div class="card-image waves-effect waves-block waves-light">
         <img src="${article.cover}" />
