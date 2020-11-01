@@ -131,7 +131,9 @@ function getArticleById() {
           </div>
         `;
         // Sisipkan komponen card ke dalam elemen dengan id #content
-        document.getElementById("body-content").innerHTML = articleHTML;
+        let body_content = document.getElementById("body-content");
+        body_content.innerHTML = articleHTML;
+
         // Kirim objek data hasil parsing json agar bisa disimpan ke indexed db
         resolve(data);
       });
@@ -172,7 +174,6 @@ function getSavedArticleById() {
   let idParam = urlParams.get("id");
 
   getById(idParam).then(function(article) {
-    articleHTML = '';
     let articleHTML = `
     <div class="card">
       <div class="card-image waves-effect waves-block waves-light">
@@ -184,7 +185,34 @@ function getSavedArticleById() {
       </div>
     </div>
   `;
+
     // Sisipkan komponen card ke dalam elemen dengan id #content
-    document.getElementById("body-content").innerHTML = articleHTML;
+    let body_content = document.getElementById("body-content");
+    body_content.innerHTML = articleHTML;
+
+    // add  remove favorite team button
+    let remove_button_html = `
+      <i class="large material-icons">remove_circle</i>
+    `;
+    remove_button = document.createElement('div');
+    remove_button.id = "remove";
+    remove_button.className = "btn-floating btn-large red";
+    remove_button.innerHTML = remove_button_html;
+    let button_action_container = document.querySelector('.fixed-action-btn');
+    console.log(button_action_container);
+    button_action_container.appendChild(remove_button);
+
+    remove_button.addEventListener('click', function (event) {
+      event.preventDefault(); // Cancel the native event
+      event.stopPropagation();// Don't bubble/capture the event
+      console.log('remove clicked');
+      let idParam = urlParams.get("id");
+      removeArticleById(idParam);
+    });
+
   });
+}
+
+function insertAfter(newNode, referenceNode) {
+  referenceNode.parentNode.insertBefore(newNode, referenceNode.nextSibling);
 }

@@ -7,6 +7,21 @@ let dbPromised = idb.open("news-reader", 1, function(upgradeDb) {
   });
 });
 
+function removeArticleById(id) {
+  dbPromised
+    .then(function(db) {
+      let tx = db.transaction("articles", "readwrite");
+      let store = tx.objectStore("articles");
+      console.log(id);
+      store.delete(id);
+      return tx.complete;
+    })
+    .then(function() {
+      console.log("Artikel berhasil dihapus.");
+      window.location.href = "/#saved";
+    });
+}
+
 function saveForLater(article) {
   dbPromised
     .then(function(db) {
