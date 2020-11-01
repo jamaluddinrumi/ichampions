@@ -5,3 +5,15 @@
 .hidden {
   display: none;
 }
+
+.sidenav {
+  padding-top: 2rem;
+}
+
+td {
+  word-break: break-word;
+}
+
+tr > td:first-child {
+  font-weight: bold;
+}

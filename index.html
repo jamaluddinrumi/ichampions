@@ -9,14 +9,17 @@
     <link rel="stylesheet" href="css/app.css" />
     <link rel="manifest" href="/manifest.json" />
     <meta name="theme-color" content="#000000" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
   </head>
   <body>
     <!-- Navigasi -->
     <nav class="teal lighten-1" role="navigation">
       <div class="nav-wrapper container">
         <a href="/#home" class="brand-logo" id="logo-container">iChampions</a>
-        <a href="/#home" class="sidenav-trigger" data-target="nav-mobile">&#9776;</a>
-
+        <a href="/#home" class="sidenav-trigger" data-target="nav-mobile">
+          <i class="large material-icons">menu</i>
+        </a>
         <ul class="topnav right hide-on-med-and-down"></ul>
         <ul class="sidenav" id="nav-mobile"></ul>
       </div>
@@ -30,7 +33,6 @@
     <script src="js/db.js"></script>
     <script src="js/nav.js"></script>
     <script src="js/api.js"></script>
-
 
     <script>
       // REGISTER SERVICE WORKER

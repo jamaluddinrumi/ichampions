@@ -1,4 +1,4 @@
-let base_url = "https://readerapi.codepolitan.com/";
+let base_url = "https://api.football-data.org/v2/";
 
 // Blok kode yang akan di panggil jika fetch berhasil
 function status(response) {
@@ -26,24 +26,26 @@ function error(error) {
 // Blok kode untuk melakukan request data json
 function getArticles() {
   if ("caches" in window) {
-    caches.match(base_url + "articles").then(function(response) {
+    caches.match(base_url + "articles").then(function (response) {
       if (response) {
-        response.json().then(function(data) {
+        response.json().then(function (data) {
           let articlesHTML = "";
-          data.result.forEach(function(article) {
+          data.result.forEach(function (article) {
             articlesHTML += `
-                  <div class="card">
-                    <a href="./article.html?id=${article.id}">
-                      <div class="card-image waves-effect waves-block waves-light">
-                        <img src="${article.thumbnail}" />
-                      </div>
-                    </a>
-                    <div class="card-content">
-                      <span class="card-title truncate">${article.title}</span>
-                      <p>${article.description}</p>
-                    </div>
+              <div class="card">
+                <a href="./article.html?id=${article.id}">
+                  <div class="card-image waves-effect waves-block waves-light">
+                    <img src="${article.crestUrl ? article.crestUrl : 'https://via.placeholder.com/266?text=No+Image'}" />
                   </div>
-                `;
+                </a>
+                <div class="card-content">
+                  <a href="./article.html?id=${article.id}">
+                    <span class="card-title truncate font-bold">${article.name}</span>
+                  </a>
+                  <p class="italic text-opacity-50">${article.founded}</p>
+                </div>
+              </div>
+            `;
           });
           // Sisipkan komponen card ke dalam elemen dengan id #content
           document.getElementById("articles").innerHTML = articlesHTML;
@@ -52,25 +54,32 @@ function getArticles() {
     });
   }
 
-  fetch(base_url + "articles")
+  fetch(base_url + "competitions/2001/teams", {
+    method: "POST",
+    headers: {
+      "X-Auth-Token": "de8dfc6cf270480287d33652b602510b",
+    },
+  })
     .then(status)
     .then(json)
-    .then(function(data) {
+    .then(function (data) {
       // Objek/array JavaScript dari response.json() masuk lewat data.
-
+      console.log(data);
       // Menyusun komponen card artikel secara dinamis
       let articlesHTML = "";
-      data.result.forEach(function(article) {
+      data.teams.forEach(function (article) {
         articlesHTML += `
               <div class="card">
                 <a href="./article.html?id=${article.id}">
                   <div class="card-image waves-effect waves-block waves-light">
-                    <img src="${article.thumbnail}" />
+                    <img src="${article.crestUrl ? article.crestUrl : 'https://via.placeholder.com/266?text=No+Image'}" />
                   </div>
                 </a>
                 <div class="card-content">
-                  <span class="card-title truncate">${article.title}</span>
-                  <p>${article.description}</p>
+                  <a href="./article.html?id=${article.id}">
+                    <span class="card-title truncate font-bold">${article.name}</span>
+                  </a>
+                  <p class="italic text-opacity-50">${article.founded}</p>
                 </div>
               </div>
             `;
@@ -82,23 +91,57 @@ function getArticles() {
 }
 
 function getArticleById() {
-  return new Promise(function(resolve, reject) {
+  return new Promise(function (resolve, reject) {
     // Ambil nilai query parameter (?id=)
     let urlParams = new URLSearchParams(window.location.search);
     let idParam = urlParams.get("id");
 
     if ("caches" in window) {
-      caches.match(base_url + "article/" + idParam).then(function(response) {
+      caches.match(base_url + "article/" + idParam).then(function (response) {
         if (response) {
-          response.json().then(function(data) {
+          response.json().then(function (data) {
             let articleHTML = `
             <div class="card">
               <div class="card-image waves-effect waves-block waves-light">
-                <img src="${data.result.cover}" />
+                <img src="${data.crestUrl}" />
               </div>
               <div class="card-content">
-                <span class="card-title">${data.result.post_title}</span>
-                ${snarkdown(data.result.post_content)}
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>Name</td>
+                      <td>${data.name}</td>
+                    </tr>
+                    <tr>
+                      <td>Address</td>
+                      <td>${data.address}</td>
+                    </tr>
+                    <tr>
+                      <td>Email</td>
+                      <td>${data.email}</td>
+                    </tr>
+                    <tr>
+                      <td>Phone</td>
+                      <td>${data.address}</td>
+                    </tr>
+                    <tr>
+                      <td>Short Name</td>
+                      <td>${data.shortName}</td>
+                    </tr>
+                    <tr>
+                      <td>Tla</td>
+                      <td>${data.tla}</td>
+                    </tr>
+                    <tr>
+                      <td>Venue</td>
+                      <td>${data.venue}</td>
+                    </tr>
+                    <tr>
+                      <td>Website</td>
+                      <td>${data.website}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           `;
@@ -112,21 +155,64 @@ function getArticleById() {
       });
     }
 
-    fetch(base_url + "article/" + idParam)
+    fetch(base_url + "teams/" + idParam, {
+      method: "POST",
+      headers: {
+        "X-Auth-Token": "de8dfc6cf270480287d33652b602510b",
+      },
+    })
       .then(status)
       .then(json)
-      .then(function(data) {
+      .then(function (data) {
         // Objek JavaScript dari response.json() masuk lewat letiabel data.
-        // console.log(data);
+        console.log(data);
         // Menyusun komponen card artikel secara dinamis
         let articleHTML = `
-          <div class="card">
-            <div class="card-image waves-effect waves-block waves-light">
-              <img src="${data.result.cover}" />
-            </div>
-            <div class="card-content">
-              <span class="card-title">${data.result.post_title}</span>
-              ${snarkdown(data.result.post_content)}
+          <div class="row">
+            <div class="col s12 m7" id="articles">
+              <div class="card">
+                <div class="card-image waves-effect waves-block waves-light">
+                  <img src="${data.crestUrl ? data.crestUrl : 'https://via.placeholder.com/266?text=No+Image'}" />
+                </div>
+                <div class="card-content">
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>Name</td>
+                        <td>${data.name}</td>
+                      </tr>
+                      <tr>
+                        <td>Address</td>
+                        <td>${data.address}</td>
+                      </tr>
+                      <tr>
+                        <td>Email</td>
+                        <td>${data.email}</td>
+                      </tr>
+                      <tr>
+                        <td>Phone</td>
+                        <td>${data.address}</td>
+                      </tr>
+                      <tr>
+                        <td>Short Name</td>
+                        <td>${data.shortName}</td>
+                      </tr>
+                      <tr>
+                        <td>Tla</td>
+                        <td>${data.tla}</td>
+                      </tr>
+                      <tr>
+                        <td>Venue</td>
+                        <td>${data.venue}</td>
+                      </tr>
+                      <tr>
+                        <td>Website</td>
+                        <td>${data.website}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         `;
@@ -141,24 +227,22 @@ function getArticleById() {
 }
 
 function getSavedArticles() {
-  getAll().then(function(articles) {
+  getAll().then(function (articles) {
     console.log(articles);
     // Menyusun komponen card artikel secara dinamis
     let articlesHTML = "";
-    articles.forEach(function(article) {
+    articles.forEach(function (article) {
       let description = article.post_content.substring(0, 100);
 
       articlesHTML += `
                   <div class="card">
                     <a href="./article.html?id=${article.ID}&saved=true">
                       <div class="card-image waves-effect waves-block waves-light">
-                        <img src="${article.cover}" />
+                        <img src="${article.crestUrl}" />
                       </div>
                     </a>
                     <div class="card-content">
-                      <span class="card-title truncate">${
-                        article.post_title
-                      }</span>
+                      <span class="card-title truncate">${article.post_title}</span>
                       <p>${description}</p>
                     </div>
                   </div>
@@ -173,7 +257,7 @@ function getSavedArticleById() {
   let urlParams = new URLSearchParams(window.location.search);
   let idParam = urlParams.get("id");
 
-  getById(idParam).then(function(article) {
+  getById(idParam).then(function (article) {
     let articleHTML = `
     <div class="card">
       <div class="card-image waves-effect waves-block waves-light">
@@ -194,22 +278,21 @@ function getSavedArticleById() {
     let remove_button_html = `
       <i class="large material-icons">remove_circle</i>
     `;
-    remove_button = document.createElement('div');
+    remove_button = document.createElement("div");
     remove_button.id = "remove";
     remove_button.className = "btn-floating btn-large red";
     remove_button.innerHTML = remove_button_html;
-    let button_action_container = document.querySelector('.fixed-action-btn');
+    let button_action_container = document.querySelector(".fixed-action-btn");
     console.log(button_action_container);
     button_action_container.appendChild(remove_button);
 
-    remove_button.addEventListener('click', function (event) {
+    remove_button.addEventListener("click", function (event) {
       event.preventDefault(); // Cancel the native event
-      event.stopPropagation();// Don't bubble/capture the event
-      console.log('remove clicked');
+      event.stopPropagation(); // Don't bubble/capture the event
+      console.log("remove clicked");
       let idParam = urlParams.get("id");
       removeArticleById(idParam);
     });
-
   });
 }
 
