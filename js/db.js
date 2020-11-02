@@ -25,8 +25,6 @@ function saveForLater(team) {
     .then(function(db) {
       let tx = db.transaction("teams", "readwrite");
       let store = tx.objectStore("teams");
-      // console.log(team);
-      // console.log(team.id);
       store.add(team);
       return tx.complete;
     })
@@ -47,20 +45,6 @@ function getAll() {
         resolve(teams);
       });
   });
-}
-
-function getAllByTitle(title) {
-  dbPromised
-    .then(function(db) {
-      let tx = db.transaction("teams", "readonly");
-      let store = tx.objectStore("teams");
-      let titleIndex = store.index("post_title");
-      let range = IDBKeyRange.bound(title, title + "\uffff");
-      return titleIndex.getAll(range);
-    })
-    .then(function(teams) {
-      console.log(teams);
-    });
 }
 
 function getById(id) {

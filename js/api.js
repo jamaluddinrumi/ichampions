@@ -31,7 +31,6 @@ function getTeams() {
       .then(function (response) {
         if (response) {
           response.json().then(function (data) {
-            console.log(data);
             let teamsHTML = "";
             data.teams.forEach(function (team) {
               teamsHTML += `
@@ -60,7 +59,7 @@ function getTeams() {
             let teams = document.getElementById("teams");
             teams.innerHTML = teamsHTML;
           });
-        } // if response
+        }
 
         else {
 
@@ -73,9 +72,6 @@ function getTeams() {
           .then(status)
           .then(json)
           .then(function (data) {
-            // Objek/array JavaScript dari response.json() masuk lewat data.
-            console.log(data);
-            // Menyusun komponen card artikel secara dinamis
             let teamsHTML = "";
             data.teams.forEach(function (team) {
               teamsHTML += `
@@ -201,10 +197,6 @@ function getTeamById() {
             .then(status)
             .then(json)
             .then(function (data) {
-              console.log('getTeamById from a new fetch');
-              // Objek JavaScript dari response.json() masuk lewat letiabel data.
-              console.log(data);
-              // Menyusun komponen card artikel secara dinamis
               let teamHTML = `
               <div class="row">
                 <div class="col s12 m7" id="team">
@@ -281,8 +273,6 @@ function getTeamById() {
 
 function getSavedTeams() {
   getAll().then(function (teams) {
-    console.log(teams);
-    // Menyusun komponen card artikel secara dinamis
     let teamsHTML = "";
     teams.forEach(function (team) {
 
@@ -310,8 +300,6 @@ function getSavedTeamById() {
   let idParam = urlParams.get("id");
 
   getById(idParam).then(function (data) {
-    console.log('getSavedTeamById : ');
-    console.log(data);
     let teamHTML = `
               <div class="row">
                 <div class="col s12 m7" id="team">
@@ -387,7 +375,6 @@ function getCompetitionInfo() {
       .then(function (response) {
         if (response) {
           response.json().then(function (data) {
-            console.log(data);
             competition = data.competition;
             season = data.season;
             let aboutHTML = `
@@ -440,9 +427,6 @@ function getCompetitionInfo() {
             .then(status)
             .then(json)
             .then(function (data) {
-              // Objek/array JavaScript dari response.json() masuk lewat data.
-              console.log(data);
-              // Menyusun komponen card artikel secara dinamis
                 competition = data.competition;
                   season = data.season;
                   let aboutHTML = `
