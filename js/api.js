@@ -61,51 +61,48 @@ function getTeams() {
           });
         }
 
-        else {
-
-          fetch(base_url + "competitions/2001/teams", {
-          method: "POST",
-          headers: {
-            "X-Auth-Token": "de8dfc6cf270480287d33652b602510b",
-          },
-        })
-          .then(status)
-          .then(json)
-          .then(function (data) {
-            let teamsHTML = "";
-            data.teams.forEach(function (team) {
-              teamsHTML += `
-                    <div class="card">
-                      <a href="./team.html?id=${team.id}" class="team-card-link">
-                        <div class="card-image waves-effect waves-block waves-light">
-                          <img src="${
-                            team.crestUrl
-                              ? team.crestUrl
-                              : "https://via.placeholder.com/266?text=No+Image"
-                          }" />
-                        </div>
-                      </a>
-                      <div class="card-content">
-                        <a href="./team.html?id=${team.id}">
-                          <span class="card-title truncate font-bold">${
-                            team.name
-                          }</span>
-                        </a>
-                        <p class="italic text-opacity-50">${team.founded}</p>
-                      </div>
-                    </div>
-                  `;
-            });
-            // Sisipkan komponen card ke dalam elemen dengan id #content
-            let teams = document.getElementById("teams");
-            teams.innerHTML = teamsHTML;
-          })
-          .catch(error);
-
-        }
-
       });
   }
+
+  fetch(base_url + "competitions/2001/teams", {
+    method: "POST",
+    headers: {
+      "X-Auth-Token": "de8dfc6cf270480287d33652b602510b",
+    },
+  })
+    .then(status)
+    .then(json)
+    .then(function (data) {
+      let teamsHTML = "";
+      data.teams.forEach(function (team) {
+        teamsHTML += `
+              <div class="card">
+                <a href="./team.html?id=${team.id}" class="team-card-link">
+                  <div class="card-image waves-effect waves-block waves-light">
+                    <img src="${
+                      team.crestUrl
+                        ? team.crestUrl
+                        : "https://via.placeholder.com/266?text=No+Image"
+                    }" />
+                  </div>
+                </a>
+                <div class="card-content">
+                  <a href="./team.html?id=${team.id}">
+                    <span class="card-title truncate font-bold">${
+                      team.name
+                    }</span>
+                  </a>
+                  <p class="italic text-opacity-50">${team.founded}</p>
+                </div>
+              </div>
+            `;
+      });
+      // Sisipkan komponen card ke dalam elemen dengan id #content
+      let teams = document.getElementById("teams");
+      teams.innerHTML = teamsHTML;
+    })
+    .catch(error);
+
 
 }
 
@@ -120,8 +117,6 @@ function getTeamById() {
         if (response) {
           response.json().then(function (data) {
             let teamHTML = `
-              <div class="row">
-                <div class="col s12 m7" id="team">
                   <div class="card">
                     <div class="card-image waves-effect waves-block waves-light">
                       <img src="${
@@ -177,8 +172,6 @@ function getTeamById() {
                       </table>
                     </div>
                   </div>
-                </div>
-              </div>
           `;
             // Sisipkan komponen card ke dalam elemen dengan id #content
             document.getElementById("body-content").innerHTML = teamHTML;
@@ -186,87 +179,80 @@ function getTeamById() {
             // Kirim objek data hasil parsing json agar bisa disimpan ke indexed db
             resolve(data);
           });
-        } // if response exist
-        else {
-          fetch(base_url + "teams/" + idParam, {
-            method: "POST",
-            headers: {
-              "X-Auth-Token": "de8dfc6cf270480287d33652b602510b",
-            },
-          })
-            .then(status)
-            .then(json)
-            .then(function (data) {
-              let teamHTML = `
-              <div class="row">
-                <div class="col s12 m7" id="team">
-                  <div class="card">
-                    <div class="card-image waves-effect waves-block waves-light">
-                      <img src="${
-                        data.crestUrl
-                          ? data.crestUrl
-                          : "https://via.placeholder.com/266?text=No+Image"
-                      }" />
-                    </div>
-                    <div class="card-content">
-                      <table>
-                        <tbody>
-                          <tr>
-                            <td>Name</td>
-                            <td>${data.name}</td>
-                          </tr>
-                          <tr>
-                            <td>Address</td>
-                            <td>${data.address}</td>
-                          </tr>
-                          <tr>
-                            <td>Email</td>
-                            <td><a href="mailto:${data.email}">${data.email}</a></td>
-                          </tr>
-                          <tr>
-                            <td>Phone</td>
-                            <td>${data.address}</td>
-                          </tr>
-                          <tr>
-                            <td>Short Name</td>
-                            <td>${data.shortName}</td>
-                          </tr>
-                          <tr>
-                            <td>Club Colors</td>
-                            <td>${data.clubColors}</td>
-                          </tr>
-                          <tr>
-                            <td>Tla</td>
-                            <td>${data.tla}</td>
-                          </tr>
-                          <tr>
-                            <td>Venue</td>
-                            <td>${data.venue}</td>
-                          </tr>
-                          <tr>
-                            <td>Website</td>
-                            <td><a href="${data.website}">${data.website}</a></td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              `;
-              // Sisipkan komponen card ke dalam elemen dengan id #content
-              let body_content = document.getElementById("body-content");
-              body_content.innerHTML = teamHTML;
-
-              // Kirim objek data hasil parsing json agar bisa disimpan ke indexed db
-              resolve(data);
-            });
         }
 
       });
     }
 
+    fetch(base_url + "teams/" + idParam, {
+      method: "POST",
+      headers: {
+        "X-Auth-Token": "de8dfc6cf270480287d33652b602510b",
+      },
+    })
+      .then(status)
+      .then(json)
+      .then(function (data) {
+        let teamHTML = `
+            <div class="card">
+              <div class="card-image waves-effect waves-block waves-light">
+                <img src="${
+                  data.crestUrl
+                    ? data.crestUrl
+                    : "https://via.placeholder.com/266?text=No+Image"
+                }" />
+              </div>
+              <div class="card-content">
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>Name</td>
+                      <td>${data.name}</td>
+                    </tr>
+                    <tr>
+                      <td>Address</td>
+                      <td>${data.address}</td>
+                    </tr>
+                    <tr>
+                      <td>Email</td>
+                      <td><a href="mailto:${data.email}">${data.email}</a></td>
+                    </tr>
+                    <tr>
+                      <td>Phone</td>
+                      <td>${data.address}</td>
+                    </tr>
+                    <tr>
+                      <td>Short Name</td>
+                      <td>${data.shortName}</td>
+                    </tr>
+                    <tr>
+                      <td>Club Colors</td>
+                      <td>${data.clubColors}</td>
+                    </tr>
+                    <tr>
+                      <td>Tla</td>
+                      <td>${data.tla}</td>
+                    </tr>
+                    <tr>
+                      <td>Venue</td>
+                      <td>${data.venue}</td>
+                    </tr>
+                    <tr>
+                      <td>Website</td>
+                      <td><a href="${data.website}">${data.website}</a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+        `;
+        // Sisipkan komponen card ke dalam elemen dengan id #content
+        let body_content = document.getElementById("body-content");
+        body_content.innerHTML = teamHTML;
 
+        // Kirim objek data hasil parsing json agar bisa disimpan ke indexed db
+        resolve(data);
+      });
 
   });
 }
@@ -301,8 +287,6 @@ function getSavedTeamById() {
 
   getById(idParam).then(function (data) {
     let teamHTML = `
-              <div class="row">
-                <div class="col s12 m7" id="team">
                   <div class="card">
                     <div class="card-image waves-effect waves-block waves-light">
                       <img src="${
@@ -358,8 +342,6 @@ function getSavedTeamById() {
                       </table>
                     </div>
                   </div>
-                </div>
-              </div>
           `;
 
     // Sisipkan komponen card ke dalam elemen dengan id #content
@@ -375,61 +357,9 @@ function getCompetitionInfo() {
       .then(function (response) {
         if (response) {
           response.json().then(function (data) {
-            competition = data.competition;
-            season = data.season;
-            let aboutHTML = `
-              <div class="row">
-                <div class="col s12 m7" id="team">
-                  <div class="card">
-                    <div class="card-image waves-effect waves-block waves-light">
-                      <img src="img/UEFA_Champions_League_logo_2.svg"/>
-                    </div>
-                    <div class="card-content">
-                      <table>
-                        <tbody>
-                          <tr>
-                            <td>Name</td>
-                            <td>${competition.name}</td>
-                          </tr>
-                          <tr>
-                            <td>Area</td>
-                            <td>${competition.area.name}</td>
-                          </tr>
-                          <tr>
-                            <td>Code</td>
-                            <td>${competition.code}</td>
-                          </tr>
-                          <tr>
-                            <td>Participants</td>
-                            <td>${data.count}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-          `;
-            // Sisipkan komponen card ke dalam elemen dengan id #content
-            let teams = document.getElementById("teams");
-            teams.innerHTML = aboutHTML;
-          });
-        }
-
-        else {
-
-          fetch(base_url + "competitions/2001/teams", {
-            method: "POST",
-            headers: {
-              "X-Auth-Token": "de8dfc6cf270480287d33652b602510b",
-            },
-          })
-            .then(status)
-            .then(json)
-            .then(function (data) {
-                competition = data.competition;
-                  season = data.season;
-                  let aboutHTML = `
+            let competition = data.competition;
+            let season = data.season;
+            let competitionHTML = `
                     <div class="row">
                       <div class="col s12 m7" id="team">
                         <div class="card">
@@ -462,16 +392,63 @@ function getCompetitionInfo() {
                       </div>
                     </div>
                 `;
-              // Sisipkan komponen card ke dalam elemen dengan id #content
-              let teams = document.getElementById("teams");
-              teams.innerHTML = aboutHTML;
-            })
-            .catch(error);
-
+            // Sisipkan komponen card ke dalam elemen dengan id #content
+            let teams = document.getElementById("teams");
+            teams.innerHTML = competitionHTML;
+          });
         }
+
+
       });
   }
 
-
+  fetch(base_url + "competitions/2001/teams", {
+    method: "POST",
+    headers: {
+      "X-Auth-Token": "de8dfc6cf270480287d33652b602510b",
+    },
+  })
+    .then(status)
+    .then(json)
+    .then(function (data) {
+      let competition = data.competition;
+      let season = data.season;
+      let competitionHTML = `
+                    <div class="row">
+                      <div class="col s12 m7" id="team">
+                        <div class="card">
+                          <div class="card-image waves-effect waves-block waves-light">
+                            <img src="img/UEFA_Champions_League_logo_2.svg"/>
+                          </div>
+                          <div class="card-content">
+                            <table>
+                              <tbody>
+                                <tr>
+                                  <td>Name</td>
+                                  <td>${competition.name}</td>
+                                </tr>
+                                <tr>
+                                  <td>Area</td>
+                                  <td>${competition.area.name}</td>
+                                </tr>
+                                <tr>
+                                  <td>Code</td>
+                                  <td>${competition.code}</td>
+                                </tr>
+                                <tr>
+                                  <td>Participants</td>
+                                  <td>${data.count}</td>
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                `;
+      // Sisipkan komponen card ke dalam elemen dengan id #content
+      let body_content = document.getElementById("teams");
+      body_content.innerHTML = competitionHTML;
+    });
 
 }
