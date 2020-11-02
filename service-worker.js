@@ -1,18 +1,23 @@
-const CACHE_NAME = "ichampions-v1";
+const CACHE_NAME = "ichampions-v3";
 var urlsToCache = [
-  // "/",
-  // "/nav.html",
-  // "/index.html",
-  // "/team.html",
-  // "/pages/home.html",
-  // "/pages/about.html",
-  // "/pages/contact.html",
-  // "/css/materialize.min.css",
-  // "/js/materialize.min.js",
-  // "/manifest.json",
-  // "/js/nav.js",
-  // // "/js/api.js",
-  // "/icon.png"
+  "/",
+  "/nav.html",
+  "/index.html",
+  "/team.html",
+  "/pages/home.html",
+  "/pages/about.html",
+  "/pages/saved.html",
+  "/css/materialize.min.css",
+  "/manifest.json",
+  "/js/materialize.min.js",
+  "/js/idb.js",
+  "/js/db.js",
+  "/js/nav.js",
+  "/js/api.js",
+  "/favicon.ico",
+  "/img/UEFA_Champions_League_logo_2.svg",
+  "https://fonts.googleapis.com/icon?family=Material+Icons",
+  "https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css",
 ];
 
 self.addEventListener("install", function(event) {
@@ -25,6 +30,9 @@ self.addEventListener("install", function(event) {
 
 self.addEventListener("fetch", function(event) {
   var base_url = "https://api.football-data.org/v2/";
+
+  console.log('sw - fetch: ');
+  console.log(event.request.url);
 
   if (event.request.url.indexOf(base_url) > -1) {
     event.respondWith(

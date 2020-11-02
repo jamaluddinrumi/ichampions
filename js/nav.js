@@ -1,25 +1,25 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   // Activate sidebar nav
   let elems = document.querySelectorAll(".sidenav");
-  M.Sidenav.init(elems);
+  let materializecss = M.Sidenav.init(elems);
   loadNav();
 
   function loadNav() {
     let xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
+    xhttp.onreadystatechange = function () {
       if (this.readyState == 4) {
         if (this.status != 200) return;
 
         // Muat daftar tautan menu
-        document.querySelectorAll(".topnav, .sidenav").forEach(function(elm) {
+        document.querySelectorAll(".topnav, .sidenav").forEach(function (elm) {
           elm.innerHTML = xhttp.responseText;
         });
 
         // Daftarkan event listener untuk setiap tautan menu
         document
           .querySelectorAll(".sidenav a, .topnav a")
-          .forEach(function(elm) {
-            elm.addEventListener("click", function(event) {
+          .forEach(function (elm) {
+            elm.addEventListener("click", function (event) {
               // Tutup sidenav
               let sidenav = document.querySelector(".sidenav");
               M.Sidenav.getInstance(sidenav).close();
@@ -38,19 +38,28 @@ document.addEventListener("DOMContentLoaded", function() {
   // Load page content
   let page = window.location.hash.substr(1);
   if (page == "") page = "home";
+  // console.log(page);
   loadPage(page);
 
   function loadPage(page) {
     // fetch('pages/' + page + '.html')
     let xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
+    xhttp.onreadystatechange = function () {
       if (this.readyState == 4) {
         let content = document.querySelector("#body-content");
 
-        if (page === "home") {
-          getTeams();
-        } else if (page === "saved") {
-          getSavedTeams();
+        switch (page) {
+          case 'home':
+            getTeams();
+            break;
+          case 'saved':
+            getSavedTeams();
+            break;
+          case 'about':
+            getCompetitionInfo();
+            break;
+          default:
+            break;
         }
 
         if (this.status == 200) {

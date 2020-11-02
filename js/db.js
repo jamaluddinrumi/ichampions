@@ -77,13 +77,12 @@ function getById(id) {
   });
 }
 
-function removeById(team) {
+function removeById(id) {
   dbPromised
     .then(function(db) {
       let tx = db.transaction("teams", "readwrite");
       let store = tx.objectStore("teams");
-      console.log(team);
-      store.delete(team.id);
+      store.delete(parseInt(id));
       return tx.complete;
     })
     .then(function() {

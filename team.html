@@ -16,9 +16,9 @@
 
 <body>
   <!-- Navigasi -->
-  <nav class="teal lighten-1" role="navigation">
+  <nav class="indigo darken-4" role="navigation">
     <div class="nav-wrapper container">
-      <a href="/#home" class="brand-logo" id="logo-container">Team Detail</a>
+      <a href="/#home" class="brand-logo font-bold" id="logo-container">Team Details</a>
       <a href="/#home" class="sidenav-trigger">
         <i class="large material-icons">arrow_back</i>
       </a>
@@ -84,8 +84,6 @@
       })
 
       if (isFromSaved) {
-        save.style.display = 'none';
-
         getSavedTeamById();
       } else {
         item = getTeamById();
@@ -103,12 +101,11 @@
 
       remove_button.onclick = function () {
         console.log("Tombol remove diklik.");
-        item.then(function (team) {
-          // console.log(item);
-          removeById(team);
-          save_button.classList.remove('hidden');
-          remove_button.classList.add('hidden');
-        });
+        removeById(idParam);
+        item = !item ? getTeamById() : item;
+        // console.log(item);
+        save_button.classList.remove('hidden');
+        remove_button.classList.add('hidden');
       };
 
       let page = window.location.hash.substr(1);
