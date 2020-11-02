@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
           case 'home':
             getTeams();
             break;
-          case 'saved':
+          case 'favorite':
             getSavedTeams();
             break;
           case 'about':

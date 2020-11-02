@@ -90,9 +90,7 @@
       }
 
       save_button.onclick = function () {
-        console.log("Tombol save diklik.");
         item.then(function (team) {
-          // console.log(item);
           saveForLater(team);
           save_button.classList.add('hidden');
           remove_button.classList.remove('hidden');
@@ -100,10 +98,8 @@
       };
 
       remove_button.onclick = function () {
-        console.log("Tombol remove diklik.");
         removeById(idParam);
         item = !item ? getTeamById() : item;
-        // console.log(item);
         save_button.classList.remove('hidden');
         remove_button.classList.add('hidden');
       };
