@@ -267,24 +267,23 @@ function getSavedTeams() {
     // Menyusun komponen card artikel secara dinamis
     let teamsHTML = "";
     teams.forEach(function (team) {
-      let description = team.post_content.substring(0, 100);
 
       teamsHTML += `
                   <div class="card">
-                    <a href="./team.html?id=${team.ID}&saved=true">
+                    <a href="./team.html?id=${team.id}&saved=true">
                       <div class="card-image waves-effect waves-block waves-light">
                         <img src="${team.crestUrl}" />
                       </div>
                     </a>
                     <div class="card-content">
-                      <span class="card-title truncate">${team.post_title}</span>
-                      <p>${description}</p>
+                      <span class="card-title truncate">${team.name}</span>
+                      <p>${team.founded}</p>
                     </div>
                   </div>
                 `;
     });
     // Sisipkan komponen card ke dalam elemen dengan id #content
-    document.getElementById("body-content").innerHTML = teamsHTML;
+    document.getElementById("teams").innerHTML = teamsHTML;
   });
 }
 

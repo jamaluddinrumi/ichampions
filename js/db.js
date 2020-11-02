@@ -68,18 +68,10 @@ function getById(id) {
     dbPromised
       .then(function(db) {
         let tx = db.transaction("teams", "readonly");
-        console.log('id');
-        console.log(id);
-        console.log('tx');
-        console.log(tx);
         let store = tx.objectStore("teams");
-        console.log('store');
-        console.log(store);
-        return store.get(id);
+        return store.get(parseInt(id));
       })
       .then(function(team) {
-        console.log('resolve');
-        console.log(team);
         resolve(team);
       });
   });
