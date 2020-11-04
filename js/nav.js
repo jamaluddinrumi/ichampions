@@ -52,9 +52,11 @@ document.addEventListener("DOMContentLoaded", function () {
             getTeams();
             break;
           case 'favorite':
+            document.title = 'Favorites';
             getSavedTeams();
             break;
           case 'about':
+            document.title = 'About';
             getCompetitionInfo();
             break;
           default:

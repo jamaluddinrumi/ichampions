@@ -1,4 +1,4 @@
-const CACHE_NAME = "ichampions-v5";
+const CACHE_NAME = "ichampions-v6";
 let urlsToCache = [
   "/",
   "/nav.html",
@@ -17,6 +17,7 @@ let urlsToCache = [
   "/js/api.js",
   "/favicon.ico",
   "/icon.png",
+  "/img/ucl-bg-header.jpg",
   "/img/notification.png",
   "/img/pick_your_fav_team_below.png",
   "/img/UEFA_Champions_League_logo_2.svg",

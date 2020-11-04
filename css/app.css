@@ -10,6 +10,21 @@
   padding-top: 2rem;
 }
 
+.row.no-gutters {
+  margin-left: -0.75rem;
+  margin-right: -0.75rem;
+}
+
+.bg-champions-league {
+  background-image: url(/img/ucl-bg-header.jpg);
+  background-position: center;
+}
+
+.from-wikipedia .card .card-content p {
+  margin-bottom: 1rem;
+  word-break: break-word;
+}
+
 td {
   word-break: break-word;
 }
