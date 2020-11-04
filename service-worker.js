@@ -1,4 +1,4 @@
-const CACHE_NAME = "ichampions-v3";
+const CACHE_NAME = "ichampions-v4";
 let urlsToCache = [
   "/",
   "/nav.html",
@@ -8,6 +8,7 @@ let urlsToCache = [
   "/pages/about.html",
   "/pages/favorite.html",
   "/css/materialize.min.css",
+  "/css/app.css",
   "/manifest.json",
   "/js/materialize.min.js",
   "/js/idb.js",
@@ -17,7 +18,7 @@ let urlsToCache = [
   "/favicon.ico",
   "/icon.png",
   "/img/UEFA_Champions_League_logo_2.svg",
-  "https://fonts.googleapis.com/icon?family=Material+Icons",
+  "https://fonts.gstatic.com/s/materialicons/v67/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2",
   "https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css",
 ];
 
