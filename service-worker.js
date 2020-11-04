@@ -1,5 +1,5 @@
 const CACHE_NAME = "ichampions-v3";
-var urlsToCache = [
+let urlsToCache = [
   "/",
   "/nav.html",
   "/index.html",
@@ -30,7 +30,7 @@ self.addEventListener("install", function(event) {
 });
 
 self.addEventListener("fetch", function(event) {
-  var base_url = "https://api.football-data.org/v2/";
+  let base_url = "https://api.football-data.org/v2/";
 
   if (event.request.url.indexOf(base_url) > -1) {
     event.respondWith(
@@ -62,5 +62,26 @@ self.addEventListener("activate", function(event) {
         })
       );
     })
+  );
+});
+
+self.addEventListener('push', function(event) {
+  let body;
+  if (event.data) {
+    body = event.data.text();
+  } else {
+    body = 'Push message no payload';
+  }
+  let options = {
+    body: body,
+    icon: 'img/notification.png',
+    vibrate: [100, 50, 100],
+    data: {
+      dateOfArrival: Date.now(),
+      primaryKey: 1
+    }
+  };
+  event.waitUntil(
+    self.registration.showNotification('Push Notification', options)
   );
 });
