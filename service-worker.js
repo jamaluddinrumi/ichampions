@@ -1,4 +1,4 @@
-const CACHE_NAME = "ichampions-v4";
+const CACHE_NAME = "ichampions-v5";
 let urlsToCache = [
   "/",
   "/nav.html",
@@ -17,6 +17,8 @@ let urlsToCache = [
   "/js/api.js",
   "/favicon.ico",
   "/icon.png",
+  "/img/notification.png",
+  "/img/pick_your_fav_team_below.png",
   "/img/UEFA_Champions_League_logo_2.svg",
   "https://fonts.gstatic.com/s/materialicons/v67/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2",
   "https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css",

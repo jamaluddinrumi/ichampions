@@ -1,3 +1,7 @@
+document.addEventListener("DOMContentLoaded", function () {
+  M.AutoInit();
+});
+
 let base_url = "https://api.football-data.org/v2/";
 
 // Blok kode yang akan di panggil jika fetch berhasil
@@ -34,26 +38,28 @@ function getTeams() {
             let teamsHTML = "";
             data.teams.forEach(function (team) {
               teamsHTML += `
-              <div class="card">
-                <a href="./team.html?id=${team.id}" class="team-card-link">
-                  <div class="card-image waves-effect waves-block waves-light">
-                    <img src="${
-                      team.crestUrl
-                        ? team.crestUrl
-                        : "https://via.placeholder.com/266?text=No+Image"
-                    }" />
+                <div class="col s12 m3">
+                  <div class="card">
+                    <a href="./team.html?id=${team.id}" class="team-card-link">
+                      <div class="card-image waves-effect waves-block waves-light">
+                        <img src="${
+                          team.crestUrl
+                            ? team.crestUrl
+                            : "https://via.placeholder.com/266?text=No+Image"
+                        }" />
+                      </div>
+                    </a>
+                    <div class="card-content">
+                      <a href="./team.html?id=${team.id}">
+                        <span class="card-title truncate font-bold">${
+                          team.name
+                        }</span>
+                      </a>
+                      <p class="italic text-opacity-50">${team.founded}</p>
+                    </div>
                   </div>
-                </a>
-                <div class="card-content">
-                  <a href="./team.html?id=${team.id}">
-                    <span class="card-title truncate font-bold">${
-                      team.name
-                    }</span>
-                  </a>
-                  <p class="italic text-opacity-50">${team.founded}</p>
                 </div>
-              </div>
-            `;
+              `;
             });
             // Sisipkan komponen card ke dalam elemen dengan id #content
             let teams = document.getElementById("teams");
@@ -76,26 +82,28 @@ function getTeams() {
       let teamsHTML = "";
       data.teams.forEach(function (team) {
         teamsHTML += `
-              <div class="card">
-                <a href="./team.html?id=${team.id}" class="team-card-link">
-                  <div class="card-image waves-effect waves-block waves-light">
-                    <img src="${
-                      team.crestUrl
-                        ? team.crestUrl
-                        : "https://via.placeholder.com/266?text=No+Image"
-                    }" />
-                  </div>
-                </a>
-                <div class="card-content">
-                  <a href="./team.html?id=${team.id}">
-                    <span class="card-title truncate font-bold">${
-                      team.name
-                    }</span>
-                  </a>
-                  <p class="italic text-opacity-50">${team.founded}</p>
+          <div class="col s12 m3">
+            <div class="card">
+              <a href="./team.html?id=${team.id}" class="team-card-link">
+                <div class="card-image waves-effect waves-block waves-light">
+                  <img src="${
+                    team.crestUrl
+                      ? team.crestUrl
+                      : "https://via.placeholder.com/266?text=No+Image"
+                  }" />
                 </div>
+              </a>
+              <div class="card-content">
+                <a href="./team.html?id=${team.id}">
+                  <span class="card-title truncate font-bold">${
+                    team.name
+                  }</span>
+                </a>
+                <p class="italic text-opacity-50">${team.founded}</p>
               </div>
-            `;
+            </div>
+          </div>
+        `;
       });
       // Sisipkan komponen card ke dalam elemen dengan id #content
       let teams = document.getElementById("teams");
@@ -117,6 +125,7 @@ function getTeamById() {
         if (response) {
           response.json().then(function (data) {
             let teamHTML = `
+                <div class="col s12 m3">
                   <div class="card">
                     <div class="card-image waves-effect waves-block waves-light">
                       <img src="${
@@ -172,9 +181,10 @@ function getTeamById() {
                       </table>
                     </div>
                   </div>
+                </div>
           `;
             // Sisipkan komponen card ke dalam elemen dengan id #content
-            document.getElementById("body-content").innerHTML = teamHTML;
+            document.getElementById("team").innerHTML = teamHTML;
 
             // Kirim objek data hasil parsing json agar bisa disimpan ke indexed db
             resolve(data);
@@ -194,6 +204,7 @@ function getTeamById() {
       .then(json)
       .then(function (data) {
         let teamHTML = `
+        <div class="col s12 m3">
             <div class="card">
               <div class="card-image waves-effect waves-block waves-light">
                 <img src="${
@@ -245,9 +256,10 @@ function getTeamById() {
                 </table>
               </div>
             </div>
+          </div>
         `;
         // Sisipkan komponen card ke dalam elemen dengan id #content
-        let body_content = document.getElementById("body-content");
+        let body_content = document.getElementById("team");
         body_content.innerHTML = teamHTML;
 
         // Kirim objek data hasil parsing json agar bisa disimpan ke indexed db
@@ -263,6 +275,7 @@ function getSavedTeams() {
     teams.forEach(function (team) {
 
       teamsHTML += `
+                <div class="col s12 m3">
                   <div class="card">
                     <a href="./team.html?id=${team.id}&saved=true">
                       <div class="card-image waves-effect waves-block waves-light">
@@ -274,7 +287,8 @@ function getSavedTeams() {
                       <p>${team.founded}</p>
                     </div>
                   </div>
-                `;
+                </div>
+              `;
     });
     // Sisipkan komponen card ke dalam elemen dengan id #content
     document.getElementById("teams").innerHTML = teamsHTML;
@@ -287,6 +301,7 @@ function getSavedTeamById() {
 
   getById(idParam).then(function (data) {
     let teamHTML = `
+                <div class="col s12 m3">
                   <div class="card">
                     <div class="card-image waves-effect waves-block waves-light">
                       <img src="${
@@ -342,10 +357,11 @@ function getSavedTeamById() {
                       </table>
                     </div>
                   </div>
+                </div>
           `;
 
     // Sisipkan komponen card ke dalam elemen dengan id #content
-    let body_content = document.getElementById("body-content");
+    let body_content = document.getElementById("team");
     body_content.innerHTML = teamHTML;
   });
 }
@@ -360,10 +376,9 @@ function getCompetitionInfo() {
             let competition = data.competition;
             let season = data.season;
             let competitionHTML = `
-                    <div class="row">
-                      <div class="col s12 m7" id="team">
+                      <div class="col s12 m3">
                         <div class="card">
-                          <div class="card-image waves-effect waves-block waves-light">
+                          <div class="card-image waves-effect waves-block waves-light p-4">
                             <img src="img/UEFA_Champions_League_logo_2.svg"/>
                           </div>
                           <div class="card-content">
@@ -391,6 +406,7 @@ function getCompetitionInfo() {
                         </div>
                       </div>
                     </div>
+                  </div>
                 `;
             // Sisipkan komponen card ke dalam elemen dengan id #content
             let teams = document.getElementById("teams");
@@ -414,10 +430,9 @@ function getCompetitionInfo() {
       let competition = data.competition;
       let season = data.season;
       let competitionHTML = `
-                    <div class="row">
-                      <div class="col s12 m7" id="team">
+                      <div class="col s12 m3">
                         <div class="card">
-                          <div class="card-image waves-effect waves-block waves-light">
+                          <div class="card-image waves-effect waves-block waves-light p-4">
                             <img src="img/UEFA_Champions_League_logo_2.svg"/>
                           </div>
                           <div class="card-content">
@@ -445,6 +460,7 @@ function getCompetitionInfo() {
                         </div>
                       </div>
                     </div>
+                  </div>
                 `;
       // Sisipkan komponen card ke dalam elemen dengan id #content
       let body_content = document.getElementById("teams");

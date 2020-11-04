@@ -18,23 +18,39 @@
   <!-- Navigasi -->
   <nav class="indigo darken-4" role="navigation">
     <div class="nav-wrapper container">
-      <a href="/#home" class="brand-logo font-bold" id="logo-container">Team Details</a>
-      <a href="/#home" class="sidenav-trigger">
-        <i class="large material-icons">arrow_back</i>
-      </a>
+      <a href="/#home" class="brand-logo font-bold md:ml-4" id="logo-container">Team Details</a>
       <ul class="topnav right hide-on-med-and-down"></ul>
       <ul class="sidenav" id="nav-mobile"></ul>
     </div>
   </nav>
   <!-- Akhir Navigasi -->
 
-  <div class="container" id="body-content"></div>
+  <div class="container mt-4 md:mt-2 md:p-4">
+    <section id="body-content">
+      <div class="row" id="team">
+      </div>
+      <div class="row">
+        <div class="col s12">
+          <a href="/#favorite" class="waves-effect waves-light btn indigo darken-4 mb-10 btn-large">
+            <i class="material-icons">arrow_back</i><span class="inline-block align-middle ml-2 pb-5">go back to favorites</span>
+          </a>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="page-footer p-4 indigo darken-4">
+    <div class="container">
+      <p class="text-center">The UEFA word, the UEFA logo and all marks related to UEFA competitions, are protected by trademarks and/or copyright of UEFA. <br />No use for commercial purposes may be made of such trademarks.
+      </p>
+    </div>
+  </footer>
 
   <div class="fixed-action-btn">
-    <a class="btn-floating btn-large green" id="save">
+    <a class="btn-floating btn-large green pulse" id="save" onclick="M.toast({html: 'I am a toast'})">
       <i class="large material-icons">add_circle</i>
     </a>
-    <a class="btn-floating btn-large red hidden" id="remove">
+    <a class="btn-floating btn-large red hidden pulse" id="remove" onclick="M.toast({html: 'I am a removed'})">
       <i class="large material-icons">remove_circle</i>
     </a>
   </div>
@@ -94,6 +110,7 @@
           saveForLater(team);
           save_button.classList.add('hidden');
           remove_button.classList.remove('hidden');
+          M.toast({html: '<i class="material-icons">check</i> yeay, added to Favorites', classes: 'green rounded'})
         });
       };
 
@@ -102,6 +119,7 @@
         item = !item ? getTeamById() : item;
         save_button.classList.remove('hidden');
         remove_button.classList.add('hidden');
+        M.toast({html: '<i class="material-icons">clear</i>removed from Favorites', classes: 'red rounded'})
       };
 
       let page = window.location.hash.substr(1);
