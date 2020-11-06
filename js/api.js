@@ -4,30 +4,23 @@ document.addEventListener("DOMContentLoaded", function () {
 
 let base_url = "https://api.football-data.org/v2/";
 
-// Blok kode yang akan di panggil jika fetch berhasil
 function status(response) {
   if (response.status !== 200) {
     console.log("Error : " + response.status);
-    // Method reject() akan membuat blok catch terpanggil
     return Promise.reject(new Error(response.statusText));
   } else {
-    // Mengubah suatu objek menjadi Promise agar bisa "di-then-kan"
     return Promise.resolve(response);
   }
 }
 
-// Blok kode untuk memparsing json menjadi array JavaScript
 function json(response) {
   return response.json();
 }
 
-// Blok kode untuk meng-handle kesalahan di blok catch
 function error(error) {
-  // Parameter error berasal dari Promise.reject()
   console.log("Error : " + error);
 }
 
-// Blok kode untuk melakukan request data json
 function getTeams() {
   if ("caches" in window) {
     caches
@@ -61,7 +54,6 @@ function getTeams() {
                 </div>
               `;
             });
-            // Sisipkan komponen card ke dalam elemen dengan id #content
             let teams = document.getElementById("teams");
             teams.innerHTML = teamsHTML;
           });
@@ -105,7 +97,6 @@ function getTeams() {
           </div>
         `;
       });
-      // Sisipkan komponen card ke dalam elemen dengan id #content
       let teams = document.getElementById("teams");
       teams.innerHTML = teamsHTML;
     })
@@ -116,7 +107,6 @@ function getTeams() {
 
 function getTeamById() {
   return new Promise(function (resolve, reject) {
-    // Ambil nilai query parameter (?id=)
     let urlParams = new URLSearchParams(window.location.search);
     let idParam = urlParams.get("id");
 
@@ -124,7 +114,6 @@ function getTeamById() {
       caches.match(base_url + "teams/" + idParam).then(function (response) {
         if (response) {
           response.json().then(function (data) {
-            // Set document title to team name
             document.title = data.name;
 
             let teamHTML = `
@@ -212,10 +201,8 @@ function getTeamById() {
             </div>
           </div>
           `;
-            // Sisipkan komponen card ke dalam elemen dengan id #content
             document.getElementById("team").innerHTML = teamHTML;
 
-            // Kirim objek data hasil parsing json agar bisa disimpan ke indexed db
             resolve(data);
           });
         }
@@ -232,7 +219,6 @@ function getTeamById() {
       .then(status)
       .then(json)
       .then(function (data) {
-        // Set document title to team name
         document.title = data.name;
 
         let teamHTML = `
@@ -316,14 +302,11 @@ function getTeamById() {
             </div>
           </div>
           `;
-        // Sisipkan komponen card ke dalam elemen dengan id #content
         let body_content = document.getElementById("team");
         body_content.innerHTML = teamHTML;
 
-        // Set document title to team name
         document.title = data.name;
 
-        // Kirim objek data hasil parsing json agar bisa disimpan ke indexed db
         resolve(data);
       });
 
@@ -331,8 +314,8 @@ function getTeamById() {
 }
 
 function getSavedTeams() {
+  let teamsHTML = `<div class="p-6 text-center"><i class="large material-icons">sentiment_very_dissatisfied</i><p>ups, you still don't have any fav teams. Add one now!</p></div>`;
   getAll().then(function (teams) {
-    let teamsHTML = `<div class="p-6 text-center"><i class="large material-icons">sentiment_very_dissatisfied</i><p>ups, you still don't have any fav teams. Add one now!</p></div>`;
     teams.forEach(function (team) {
       teamsHTML += `
                 <div class="col s6 m4">
@@ -350,7 +333,6 @@ function getSavedTeams() {
                 </div>
               `;
     });
-    // Sisipkan komponen card ke dalam elemen dengan id #content
     document.getElementById("teams").innerHTML = teamsHTML;
   });
 }
@@ -360,7 +342,6 @@ function getSavedTeamById() {
   let idParam = urlParams.get("id");
 
   getById(idParam).then(function (data) {
-    // Set document title to team name
     document.title = data.name;
 
     let teamHTML = `
@@ -448,7 +429,6 @@ function getSavedTeamById() {
             </div>
           </div>
           `;
-    // Sisipkan komponen card ke dalam elemen dengan id #content
     let body_content = document.getElementById("team");
     body_content.innerHTML = teamHTML;
 
@@ -495,7 +475,6 @@ function getCompetitionInfo() {
                         </div>
                       </div>
                 `;
-            // Sisipkan komponen card ke dalam elemen dengan id #content
             let teams = document.getElementById("teams");
             teams.innerHTML = competitionHTML;
           });
@@ -587,7 +566,6 @@ function getCompetitionInfo() {
                         </div>
                     </div>
                 `;
-      // Sisipkan komponen card ke dalam elemen dengan id #content
       let body_content = document.getElementById("teams");
       body_content.innerHTML = competitionHTML;
     });
