@@ -21,6 +21,7 @@ let urlsToCache = [
   "/img/notification.png",
   "/img/pick_your_fav_team_below.png",
   "/img/UEFA_Champions_League_logo_2.svg",
+  "https://fonts.googleapis.com/icon?family=Material+Icons",
   "https://fonts.gstatic.com/s/materialicons/v67/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2",
   "https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css",
 ];
