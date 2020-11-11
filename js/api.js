@@ -314,25 +314,29 @@ function getTeamById() {
 }
 
 function getSavedTeams() {
-  let teamsHTML = `<div class="p-6 text-center"><i class="large material-icons">sentiment_very_dissatisfied</i><p>ups, you still don't have any fav teams. Add one now!</p></div>`;
+  let teamsHTML = '';
   getAll().then(function (teams) {
-    teams.forEach(function (team) {
-      teamsHTML += `
-                <div class="col s6 m4">
-                  <div class="card">
-                    <a href="./team.html?id=${team.id}&saved=true">
-                      <div class="card-image p-4 waves-effect waves-block waves-light">
-                        <img src="${team.crestUrl}" alt="${team.name} logo" />
+    if (teams.length === 0) {
+      let teamsHTML = `<div class="p-6 text-center"><i class="large material-icons">sentiment_very_dissatisfied</i><p>ups, you still don't have any fav teams. Add one now!</p></div>`;
+    } else {
+      teams.forEach(function (team) {
+        teamsHTML += `
+                  <div class="col s6 m4">
+                    <div class="card">
+                      <a href="./team.html?id=${team.id}&saved=true">
+                        <div class="card-image p-4 waves-effect waves-block waves-light">
+                          <img src="${team.crestUrl}" alt="${team.name} logo" />
+                        </div>
+                      </a>
+                      <div class="card-content">
+                        <span class="card-title truncate">${team.name}</span>
+                        <p>${team.founded}</p>
                       </div>
-                    </a>
-                    <div class="card-content">
-                      <span class="card-title truncate">${team.name}</span>
-                      <p>${team.founded}</p>
                     </div>
                   </div>
-                </div>
-              `;
-    });
+                `;
+      });
+    }
     document.getElementById("teams").innerHTML = teamsHTML;
   });
 }
