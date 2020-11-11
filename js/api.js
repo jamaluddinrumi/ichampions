@@ -1,3 +1,5 @@
+const API_KEY = 'de8dfc6cf270480287d33652b602510b';
+
 document.addEventListener("DOMContentLoaded", function () {
   M.AutoInit();
 });
@@ -65,7 +67,7 @@ function getTeams() {
   fetch(base_url + "competitions/2001/teams", {
     method: "POST",
     headers: {
-      "X-Auth-Token": "de8dfc6cf270480287d33652b602510b",
+      "X-Auth-Token": API_KEY,
     },
   })
     .then(status)
@@ -213,7 +215,7 @@ function getTeamById() {
     fetch(base_url + "teams/" + idParam, {
       method: "POST",
       headers: {
-        "X-Auth-Token": "de8dfc6cf270480287d33652b602510b",
+        "X-Auth-Token": API_KEY,
       },
     })
       .then(status)
@@ -491,7 +493,7 @@ function getCompetitionInfo() {
   fetch(base_url + "competitions/2001/teams", {
     method: "POST",
     headers: {
-      "X-Auth-Token": "de8dfc6cf270480287d33652b602510b",
+      "X-Auth-Token": API_KEY,
     },
   })
     .then(status)
