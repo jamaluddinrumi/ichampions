@@ -4,12 +4,21 @@
 <head>
   <meta charset="UTF-8" />
   <title>iChampions - Champions League in Your Pocket</title>
-  <meta name="description" content="My first PWA" />
+  <meta name="description" content="iChampions - Champions League in Your Pocket" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <link rel="stylesheet" href="css/materialize.min.css" />
-  <link rel="stylesheet" href="css/app.css" />
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+  <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg" color="#777777">
+  <link rel="shortcut icon" href="/favicon/favicon.ico">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="msapplication-config" content="/favicon/browserconfig.xml">
+  <meta name="theme-color" content="#ffffff">
+
+  <link rel="stylesheet" href="/css/materialize.min.css" />
+  <link rel="stylesheet" href="/css/app.css" />
   <link rel="manifest" href="/manifest.json" />
-  <meta name="theme-color" content="#000000" />
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
 </head>
@@ -42,11 +51,11 @@
     </div>
   </footer>
 
-  <script src="js/materialize.min.js"></script>
-  <script src="js/idb.js"></script>
-  <script src="js/db.js"></script>
-  <script src="js/nav.js"></script>
-  <script src="js/api.js"></script>
+  <script src="/js/materialize.min.js"></script>
+  <script src="/js/idb.js"></script>
+  <script src="/js/db.js"></script>
+  <script src="/js/nav.js"></script>
+  <script src="/js/api.js"></script>
 
   <script>
     // REGISTER SERVICE WORKER
@@ -108,7 +117,7 @@
     } else {
       console.log("ServiceWorker belum didukung browser ini.");
     }
-
+  // END OF REGISTER SERVICE WORKER
   </script>
 </body>
 
