@@ -146,7 +146,7 @@
       let storeAllKeys = allKeys();
       storeAllKeys.then(function (response) {
         response.forEach(key => {
-          if (parseInt(idParam) === parseInt(key)) {
+          if (parseInt(idParam) == parseInt(key)) {
             save_button.classList.add('hidden');
             remove_button.classList.remove('hidden');
           }
@@ -170,7 +170,7 @@
 
       remove_button.onclick = function () {
         removeById(idParam);
-        item = !item ? getTeamById() : item;
+        item = Object.entries(item).length === 0 ? getTeamById() : item;
         save_button.classList.remove('hidden');
         remove_button.classList.add('hidden');
         M.toast({html: '<i class="material-icons mr-1">clear</i>removed from Favorites', classes: 'red md:rounded'})
