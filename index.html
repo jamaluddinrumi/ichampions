@@ -1,110 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>iChampions - Champions League in Your Pocket</title>
-    <meta name="description" content="My first PWA" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="css/materialize.min.css" />
-    <link rel="stylesheet" href="css/app.css" />
-    <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#000000" />
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
-    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
-  </head>
-  <body>
-    <!-- Navigasi -->
-    <nav class="indigo darken-4" role="navigation">
-      <div class="nav-wrapper container">
-        <a href="#!" class="brand-logo font-bold ml-4" id="logo-container">iChampions</a>
-        <a href="#!" class="sidenav-trigger" data-target="nav-mobile">
-          <i class="large material-icons">menu</i>
-        </a>
-        <ul class="topnav right hide-on-med-and-down mr-4"></ul>
-        <ul class="sidenav" id="nav-mobile"></ul>
-      </div>
-    </nav>
-    <!-- Akhir Navigasi -->
 
-    <div class="container md:p-4">
-      <section id="body-content">
+<head>
+  <meta charset="UTF-8" />
+  <title>iChampions - Champions League in Your Pocket</title>
+  <meta name="description" content="My first PWA" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="css/materialize.min.css" />
+  <link rel="stylesheet" href="css/app.css" />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#000000" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+</head>
 
-      </section>
+<body>
+  <!-- Navigasi -->
+  <nav class="indigo darken-4" role="navigation">
+    <div class="nav-wrapper container">
+      <a href="#!" class="brand-logo font-bold ml-4" id="logo-container">iChampions</a>
+      <a href="#!" class="sidenav-trigger" data-target="nav-mobile">
+        <i class="large material-icons">menu</i>
+      </a>
+      <ul class="topnav right hide-on-med-and-down mr-4"></ul>
+      <ul class="sidenav" id="nav-mobile"></ul>
     </div>
+  </nav>
+  <!-- Akhir Navigasi -->
 
-    <footer class="page-footer p-4 indigo darken-4">
-      <div class="container">
-        <p class="text-center">The UEFA word, the UEFA logo and all marks related to UEFA competitions, are protected by trademarks and/or copyright of UEFA. <br />No use for commercial purposes may be made of such trademarks.
-        </p>
-      </div>
-    </footer>
+  <div class="container md:p-4">
+    <section id="body-content">
 
-    <script src="js/materialize.min.js"></script>
-    <script src="js/idb.js"></script>
-    <script src="js/db.js"></script>
-    <script src="js/nav.js"></script>
-    <script src="js/api.js"></script>
+    </section>
+  </div>
 
-    <script>
-      // REGISTER SERVICE WORKER
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", function() {
+  <footer class="page-footer p-4 indigo darken-4">
+    <div class="container">
+      <p class="text-center">The UEFA word, the UEFA logo and all marks related to UEFA competitions, are protected by
+        trademarks and/or copyright of UEFA. <br />No use for commercial purposes may be made of such trademarks.
+      </p>
+    </div>
+  </footer>
+
+  <script src="js/materialize.min.js"></script>
+  <script src="js/idb.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/nav.js"></script>
+  <script src="js/api.js"></script>
+
+  <script>
+    // REGISTER SERVICE WORKER
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.ready.then(function (registration) {
+        window.addEventListener("load", function () {
           navigator.serviceWorker
             .register("/service-worker.js")
-            .then(function() {
+            .then(function () {
+              if ('Notification' in window) {
+                Notification.requestPermission().then(function (result) {
+                  if (result === "denied") {
+                    console.log("Fitur notifikasi tidak diijinkan.");
+                    return;
+                  } else if (result === "default") {
+                    console.error("Pengguna menutup kotak dialog permintaan ijin.");
+                    return;
+                  }
+
+                  if (('PushManager' in window)) {
+                    navigator.serviceWorker.getRegistration().then(function (registration) {
+                      registration.pushManager.subscribe({
+                        userVisibleOnly: true,
+                        applicationServerKey: urlBase64ToUint8Array('BPoKfP-NsrBgYs_epjQRvW0iK5dnAvjEM0WNrDnZ4cVNp9XjVN0vTigOUxIzkbAdC2JsGG5HH7XoKPztGrMzjEM')
+                      }).then(function (subscribe) {
+                        console.log('Berhasil melakukan subscribe dengan endpoint: ', subscribe.endpoint);
+                        console.log('Berhasil melakukan subscribe dengan p256dh key: ', btoa(String.fromCharCode.apply(
+                          null, new Uint8Array(subscribe.getKey('p256dh')))));
+                        console.log('Berhasil melakukan subscribe dengan auth key: ', btoa(String.fromCharCode.apply(
+                          null, new Uint8Array(subscribe.getKey('auth')))));
+                      }).catch(function (e) {
+                        console.error('Tidak dapat melakukan subscribe ', e.message);
+                      });
+                    });
+                  }
+
+                  function urlBase64ToUint8Array(base64String) {
+                    const padding = '='.repeat((4 - base64String.length % 4) % 4);
+                    const base64 = (base64String + padding)
+                      .replace(/-/g, '+')
+                      .replace(/_/g, '/');
+                    const rawData = window.atob(base64);
+                    const outputArray = new Uint8Array(rawData.length);
+                    for (let i = 0; i < rawData.length; ++i) {
+                      outputArray[i] = rawData.charCodeAt(i);
+                    }
+                    return outputArray;
+                  }
+
+                });
+              }
               console.log("Pendaftaran ServiceWorker berhasil");
             })
-            .catch(function() {
+            .catch(function () {
               console.log("Pendaftaran ServiceWorker gagal");
             });
         });
-      } else {
-        console.log("ServiceWorker belum didukung browser ini.");
-      }
+      });
+    } else {
+      console.log("ServiceWorker belum didukung browser ini.");
+    }
 
-      if ('Notification' in window) {
-        Notification.requestPermission().then(function (result) {
-          if (result === "denied") {
-            console.log("Fitur notifikasi tidak diijinkan.");
-            return;
-          } else if (result === "default") {
-            console.error("Pengguna menutup kotak dialog permintaan ijin.");
-            return;
-          }
+  </script>
+</body>
 
-          if (('PushManager' in window)) {
-            navigator.serviceWorker.getRegistration().then(function(registration) {
-                registration.pushManager.subscribe({
-                    userVisibleOnly: true,
-                    applicationServerKey: urlBase64ToUint8Array('BPoKfP-NsrBgYs_epjQRvW0iK5dnAvjEM0WNrDnZ4cVNp9XjVN0vTigOUxIzkbAdC2JsGG5HH7XoKPztGrMzjEM')
-                }).then(function(subscribe) {
-                    console.log('Berhasil melakukan subscribe dengan endpoint: ', subscribe.endpoint);
-                    console.log('Berhasil melakukan subscribe dengan p256dh key: ', btoa(String.fromCharCode.apply(
-                        null, new Uint8Array(subscribe.getKey('p256dh')))));
-                    console.log('Berhasil melakukan subscribe dengan auth key: ', btoa(String.fromCharCode.apply(
-                        null, new Uint8Array(subscribe.getKey('auth')))));
-                }).catch(function(e) {
-                    console.error('Tidak dapat melakukan subscribe ', e.message);
-                });
-            });
-          }
-
-          function urlBase64ToUint8Array(base64String) {
-            const padding = '='.repeat((4 - base64String.length % 4) % 4);
-            const base64 = (base64String + padding)
-                .replace(/-/g, '+')
-                .replace(/_/g, '/');
-            const rawData = window.atob(base64);
-            const outputArray = new Uint8Array(rawData.length);
-            for (let i = 0; i < rawData.length; ++i) {
-                outputArray[i] = rawData.charCodeAt(i);
-            }
-            return outputArray;
-          }
-
-        });
-      }
-
-    </script>
-  </body>
 </html>
