@@ -317,7 +317,7 @@ function getSavedTeams() {
   let teamsHTML = '';
   getAll().then(function (teams) {
     if (teams.length === 0) {
-      let teamsHTML = `<div class="p-6 text-center"><i class="large material-icons">sentiment_very_dissatisfied</i><p>ups, you still don't have any fav teams. Add one now!</p></div>`;
+      teamsHTML = `<div class="p-6 text-center"><i class="large material-icons">sentiment_very_dissatisfied</i><p>ups, you still don't have any fav teams. Add one now!</p></div>`;
     } else {
       teams.forEach(function (team) {
         teamsHTML += `
