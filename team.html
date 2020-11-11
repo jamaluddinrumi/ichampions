@@ -92,7 +92,7 @@
       let storeAllKeys = allKeys();
       storeAllKeys.then(function (response) {
         response.forEach(key => {
-          if (idParam == key) {
+          if (idParam === key) {
             save_button.classList.add('hidden');
             remove_button.classList.remove('hidden');
           }

@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function loadNav() {
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
-      if (this.readyState == 4) {
+      if (this.readyState === 4) {
         if (this.status != 200) return;
 
         // Muat daftar tautan menu
@@ -37,14 +37,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Load page content
   let page = window.location.hash.substr(1);
-  if (page == "") page = "home";
+  if (page === "") page = "home";
   loadPage(page);
 
   function loadPage(page) {
     // fetch('pages/' + page + '.html')
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
-      if (this.readyState == 4) {
+      if (this.readyState === 4) {
         let content = document.querySelector("#body-content");
 
         switch (page) {
@@ -63,9 +63,9 @@ document.addEventListener("DOMContentLoaded", function () {
             break;
         }
 
-        if (this.status == 200) {
+        if (this.status === 200) {
           content.innerHTML = xhttp.responseText;
-        } else if (this.status == 404) {
+        } else if (this.status === 404) {
           content.innerHTML = "<p>Halaman tidak ditemukan.</p>";
         } else {
           content.innerHTML = "<p>Ups.. halaman tidak dapat diakses.</p>";
