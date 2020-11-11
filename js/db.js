@@ -1,4 +1,4 @@
-let dbPromised = idb.open("ichampions-1", 1, function(upgradeDb) {
+let dbPromised = idb.open("ichampions-2", 1, function(upgradeDb) {
   let teamsObjectStore = upgradeDb.createObjectStore("teams", {
     keyPath: "id",
     autoIncrement: false
@@ -25,7 +25,7 @@ function saveForLater(team) {
     .then(function(db) {
       let tx = db.transaction("teams", "readwrite");
       let store = tx.objectStore("teams");
-      store.add(team);
+      store.put(team);
       return tx.complete;
     })
     .then(function() {
