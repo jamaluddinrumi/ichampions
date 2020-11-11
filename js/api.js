@@ -39,7 +39,7 @@ function getTeams() {
                           team.crestUrl
                             ? team.crestUrl
                             : "https://via.placeholder.com/266?text=No+Image"
-                        }" />
+                        }" alt="${team.name} logo" />
                       </div>
                     </a>
                     <div class="card-content">
@@ -82,7 +82,7 @@ function getTeams() {
                     team.crestUrl
                       ? team.crestUrl
                       : "https://via.placeholder.com/266?text=No+Image"
-                  }" />
+                  }" alt="${team.name} logo" />
                 </div>
               </a>
               <div class="card-content">
@@ -124,7 +124,7 @@ function getTeamById() {
                         data.crestUrl
                           ? data.crestUrl
                           : "https://via.placeholder.com/266?text=No+Image"
-                      }" />
+                      }" alt="${data.name} logo"/>
                     </div>
                     <div class="card-content">
                       <table>
@@ -229,7 +229,7 @@ function getTeamById() {
                   data.crestUrl
                     ? data.crestUrl
                     : "https://via.placeholder.com/266?text=No+Image"
-                }" />
+                }" alt="${data.name} logo" />
               </div>
               <div class="card-content">
                 <table>
@@ -322,7 +322,7 @@ function getSavedTeams() {
                   <div class="card">
                     <a href="./team.html?id=${team.id}&saved=true">
                       <div class="card-image p-4 waves-effect waves-block waves-light">
-                        <img src="${team.crestUrl}" />
+                        <img src="${team.crestUrl}" alt="${team.name} logo" />
                       </div>
                     </a>
                     <div class="card-content">
@@ -352,7 +352,7 @@ function getSavedTeamById() {
                         data.crestUrl
                           ? data.crestUrl
                           : "https://via.placeholder.com/266?text=No+Image"
-                      }" />
+                      }" alt="${data.name} logo" />
                     </div>
                     <div class="card-content">
                       <table>
