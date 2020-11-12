@@ -19,6 +19,7 @@ workbox.precaching.precacheAndRoute([
   { url: "/js/nav.js", revision: "1" },
   { url: "/js/api.js", revision: "1" },
   { url: "/icon.png", revision: "1" },
+  { url: "/icon192.png", revision: "1" },
   { url: "/img/ucl-bg-header.jpg", revision: "1" },
   { url: "/img/notification.png", revision: "1" },
   { url: "/img/pick_your_fav_team_below.png", revision: "1" },
