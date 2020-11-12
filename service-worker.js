@@ -1,4 +1,4 @@
-const CACHE_NAME = "ichampions-v6";
+const CACHE_NAME = "ichampions-v8";
 let urlsToCache = [
   "/",
   "/nav.html",
