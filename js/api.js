@@ -438,7 +438,6 @@ function getCompetitionInfo() {
         if (response) {
           response.json().then(function (data) {
             let competition = data.competition;
-            let season = data.season;
             let competitionHTML = `
                       <div class="col s12 m3">
                         <div class="card">
@@ -485,81 +484,82 @@ function getCompetitionInfo() {
   })
     .then(status)
     .then(json)
-    .then(function (data) {
-      let competition = data.competition;
-      let season = data.season;
-      let competitionHTML = `
-                      <div class="col s12 m4">
-                        <div class="card">
-                          <div class="card-image waves-effect waves-block waves-light p-4">
-                            <img src="img/UEFA_Champions_League_logo_2.svg"/>
-                          </div>
-                          <div class="card-content">
-                            <table>
-                              <tbody>
-                                <tr>
-                                  <td>Name</td>
-                                  <td>${competition.name}</td>
-                                </tr>
-                                <tr>
-                                  <td>Area</td>
-                                  <td>${competition.area.name}</td>
-                                </tr>
-                                <tr>
-                                  <td>Code</td>
-                                  <td>${competition.code}</td>
-                                </tr>
-                                <tr>
-                                  <td>Participants</td>
-                                  <td>${data.count}</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="col m8 from-wikipedia">
-                        <div class="card">
-                            <div class="card-content">
-                                <p>The UEFA Champions League (abbreviated as UCL) is an annual club football competition organised by the
-                                    Union of European Football Associations (UEFA) and contested by top-division European clubs, deciding
-                                    the competition winners through a group and knockout format. It is one of the most prestigious football
-                                    tournaments in the world and the most prestigious club competition in European football, played by the
-                                    national league champions (and, for some nations, one or more runners-up) of their national
-                                    associations.</p>
-                                <p>
-                                </p>
-                                <p>Introduced in 1955 as the European Champion Clubs' Cup, commonly known as European Cup, it was initially
-                                    a straight knockout tournament open only to the champions of Europe's domestic leagues, with its winner
-                                    reckoned as the European club champion. The competition took on its current name in 1992, adding a
-                                    round-robin group stage in 1991 and allowing multiple entrants from certain countries since 1997.[1] It
-                                    has since been expanded, and while most of Europe's national leagues can still only enter their
-                                    champion, the strongest leagues now provide up to four teams.[2][3] Clubs that finish next-in-line in
-                                    their national league, having not qualified for the Champions League, are eligible for the second-tier
-                                    UEFA Europa League competition, and from 2021, teams not eligible for the UEFA Europa League will
-                                    qualify for a new third-tier competition called the UEFA Europa Conference League.[4]</p>
-                                <p>In its present format, the Champions League begins in late June with a preliminary round, three qualifying
-                                    rounds and a play-off round, all played over two legs. The six surviving teams enter the group stage,
-                                    joining 26 teams qualified in advance. The 32 teams are drawn into eight groups of four teams and play
-                                    each other in a double round-robin system. The eight group winners and eight runners-up proceed to the
-                                    knockout phase that culminates with the final match in late May or early June.[5] The winner of the
-                                    Champions League qualifies for the following year's Champions League, the UEFA Super Cup and the FIFA
-                                    Club World Cup.[6][7] In 2020, the traditional schedule for UEFA matches was disrupted due to the impact
-                                    of the COVID-19 pandemic. The format of the remainder of the tournament was temporarily amended as a
-                                    result, with the quarter-finals and semi-finals being played as single match knockout ties at neutral
-                                    venues in Lisbon, Portugal from 12 to 23 August.
-                                </p>
-                                <p>Spanish clubs have the highest number of victories (18 wins), followed by England (13 wins) and Italy (12
-                                    wins). England has the largest number of winning teams, with five clubs having won the title. The
-                                    competition has been won by 22 clubs, 12 of which have won it more than once.[8] Real Madrid is the most
-                                    successful club in the tournament's history, having won it 13 times, including its first five seasons.
-                                    Bayern Munich are the reigning champions, having beaten Paris Saint-Germain 1–0 in the 2020 final.</p>
-                                <p>source: <a class="italic underline text-indigo-900" href="https://en.wikipedia.org/wiki/UEFA_Champions_League">https://en.wikipedia.org/wiki/UEFA_Champions_League</a></p>
-                            </div>
-                        </div>
-                    </div>
-                `;
-      let body_content = document.getElementById("teams");
-      body_content.innerHTML = competitionHTML;
-    });
+    .then(showCompetitionDetail);
+}
+
+function showCompetitionDetail(data) {
+  let competition = data.competition;
+  let competitionHTML = `
+    <div class="col s12 m4">
+      <div class="card">
+        <div class="card-image waves-effect waves-block waves-light p-4">
+          <img src="img/UEFA_Champions_League_logo_2.svg"/>
+        </div>
+        <div class="card-content">
+          <table>
+            <tbody>
+              <tr>
+                <td>Name</td>
+                <td>${competition.name}</td>
+              </tr>
+              <tr>
+                <td>Area</td>
+                <td>${competition.area.name}</td>
+              </tr>
+              <tr>
+                <td>Code</td>
+                <td>${competition.code}</td>
+              </tr>
+              <tr>
+                <td>Participants</td>
+                <td>${data.count}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col m8 from-wikipedia">
+      <div class="card">
+        <div class="card-content">
+            <p>The UEFA Champions League (abbreviated as UCL) is an annual club football competition organised by the
+                Union of European Football Associations (UEFA) and contested by top-division European clubs, deciding
+                the competition winners through a group and knockout format. It is one of the most prestigious football
+                tournaments in the world and the most prestigious club competition in European football, played by the
+                national league champions (and, for some nations, one or more runners-up) of their national
+                associations.</p>
+            <p>
+            </p>
+            <p>Introduced in 1955 as the European Champion Clubs' Cup, commonly known as European Cup, it was initially
+                a straight knockout tournament open only to the champions of Europe's domestic leagues, with its winner
+                reckoned as the European club champion. The competition took on its current name in 1992, adding a
+                round-robin group stage in 1991 and allowing multiple entrants from certain countries since 1997.[1] It
+                has since been expanded, and while most of Europe's national leagues can still only enter their
+                champion, the strongest leagues now provide up to four teams.[2][3] Clubs that finish next-in-line in
+                their national league, having not qualified for the Champions League, are eligible for the second-tier
+                UEFA Europa League competition, and from 2021, teams not eligible for the UEFA Europa League will
+                qualify for a new third-tier competition called the UEFA Europa Conference League.[4]</p>
+            <p>In its present format, the Champions League begins in late June with a preliminary round, three qualifying
+                rounds and a play-off round, all played over two legs. The six surviving teams enter the group stage,
+                joining 26 teams qualified in advance. The 32 teams are drawn into eight groups of four teams and play
+                each other in a double round-robin system. The eight group winners and eight runners-up proceed to the
+                knockout phase that culminates with the final match in late May or early June.[5] The winner of the
+                Champions League qualifies for the following year's Champions League, the UEFA Super Cup and the FIFA
+                Club World Cup.[6][7] In 2020, the traditional schedule for UEFA matches was disrupted due to the impact
+                of the COVID-19 pandemic. The format of the remainder of the tournament was temporarily amended as a
+                result, with the quarter-finals and semi-finals being played as single match knockout ties at neutral
+                venues in Lisbon, Portugal from 12 to 23 August.
+            </p>
+            <p>Spanish clubs have the highest number of victories (18 wins), followed by England (13 wins) and Italy (12
+                wins). England has the largest number of winning teams, with five clubs having won the title. The
+                competition has been won by 22 clubs, 12 of which have won it more than once.[8] Real Madrid is the most
+                successful club in the tournament's history, having won it 13 times, including its first five seasons.
+                Bayern Munich are the reigning champions, having beaten Paris Saint-Germain 1–0 in the 2020 final.</p>
+            <p>source: <a class="italic underline text-indigo-900" href="https://en.wikipedia.org/wiki/UEFA_Champions_League">https://en.wikipedia.org/wiki/UEFA_Champions_League</a></p>
+        </div>
+      </div>
+    </div>
+  `;
+  let body_content = document.getElementById("teams");
+  body_content.innerHTML = competitionHTML;
 }
