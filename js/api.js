@@ -1,12 +1,30 @@
-const API_KEY = 'de8dfc6cf270480287d33652b602510b';
+let base_url = "https://api.football-data.org/v2/";
+const API_KEY = "de8dfc6cf270480287d33652b602510b";
+const preloader = `
+<div class="col s12 flex justify-center my-8">
+  <div class="preloader-wrapper big active">
+    <div class="spinner-layer spinner-blue-only">
+      <div class="circle-clipper left">
+        <div class="circle"></div>
+      </div>
+      <div class="gap-patch">
+        <div class="circle"></div>
+      </div>
+      <div class="circle-clipper right">
+        <div class="circle"></div>
+      </div>
+    </div>
+  </div>
+</div>
+`;
 
 document.addEventListener("DOMContentLoaded", function () {
   M.AutoInit();
 });
 
-let base_url = "https://api.football-data.org/v2/";
-
 function status(response) {
+  document.querySelector("#teams").innerHTML = preloader;
+
   if (response.status !== 200) {
     console.log("Error : " + response.status);
     return Promise.reject(new Error(response.statusText));
@@ -28,7 +46,7 @@ function getTeams() {
     caches
       .match(base_url + "competitions/2001/teams")
       .then(function (response) {
-        let teamsHTML = '';
+        let teamsHTML = "";
         if (response) {
           response.json().then(function (data) {
             data.teams.forEach(function (team) {
@@ -60,7 +78,6 @@ function getTeams() {
             teams.innerHTML = teamsHTML;
           });
         }
-
       });
   }
 
@@ -73,7 +90,7 @@ function getTeams() {
     .then(status)
     .then(json)
     .then(function (data) {
-      let teamsHTML = '';
+      let teamsHTML = "";
       data.teams.forEach(function (team) {
         teamsHTML += `
           <div class="col s6 m4">
@@ -103,8 +120,6 @@ function getTeams() {
       teams.innerHTML = teamsHTML;
     })
     .catch(error);
-
-
 }
 
 function getTeamById() {
@@ -177,7 +192,7 @@ function getTeamById() {
                   </div>
                 </div>
           `;
-          teamHTML += `
+            teamHTML += `
           <div class="col s12 m6">
             <div class="card">
 
@@ -188,27 +203,26 @@ function getTeamById() {
               <table>
                   <tbody>
           `;
-          data.squad.forEach(function(player){
-            teamHTML += `
+            data.squad.forEach(function (player) {
+              teamHTML += `
               <tr>
                 <td>${player.position}</td>
                 <td>${player.name}</td>
               </tr>
             `;
-          });
-          teamHTML += `
+            });
+            teamHTML += `
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
           `;
-            document.getElementById("team").innerHTML = teamHTML;
+            document.getElementById("teams").innerHTML = teamHTML;
 
             resolve(data);
           });
         }
-
       });
     }
 
@@ -289,34 +303,33 @@ function getTeamById() {
               <table>
                   <tbody>
           `;
-          data.squad.forEach(function(player){
-            teamHTML += `
+        data.squad.forEach(function (player) {
+          teamHTML += `
               <tr>
                 <td>${player.position}</td>
                 <td>${player.name}</td>
               </tr>
             `;
-          });
-          teamHTML += `
+        });
+        teamHTML += `
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
           `;
-        let body_content = document.getElementById("team");
+        let body_content = document.getElementById("teams");
         body_content.innerHTML = teamHTML;
 
         document.title = data.name;
 
         resolve(data);
       });
-
   });
 }
 
 function getSavedTeams() {
-  let teamsHTML = '';
+  let teamsHTML = "";
   getAll().then(function (teams) {
     if (teams.length === 0) {
       teamsHTML = `<div class="p-6 text-center"><i class="large material-icons">sentiment_very_dissatisfied</i><p>ups, you still don't have any fav teams. Add one now!</p></div>`;
@@ -374,8 +387,8 @@ function getSavedTeamById() {
                           <tr>
                             <td>Email</td>
                             <td><a href="mailto:${data.email}">${
-              data.email
-            }</a></td>
+      data.email
+    }</a></td>
                           </tr>
                           <tr>
                             <td>Phone</td>
@@ -400,8 +413,8 @@ function getSavedTeamById() {
                           <tr>
                             <td>Website</td>
                             <td><a href="${data.website}">${
-              data.website
-            }</a></td>
+      data.website
+    }</a></td>
                           </tr>
                         </tbody>
                       </table>
@@ -409,7 +422,7 @@ function getSavedTeamById() {
                   </div>
                 </div>
           `;
-          teamHTML += `
+    teamHTML += `
           <div class="col s12 m6">
             <div class="card">
 
@@ -420,24 +433,23 @@ function getSavedTeamById() {
               <table>
                   <tbody>
           `;
-          data.squad.forEach(function(player){
-            teamHTML += `
+    data.squad.forEach(function (player) {
+      teamHTML += `
               <tr>
                 <td>${player.position}</td>
                 <td>${player.name}</td>
               </tr>
             `;
-          });
-          teamHTML += `
+    });
+    teamHTML += `
                   </tbody>
                 </table>
               </div>
             </div>
           </div>
           `;
-    let body_content = document.getElementById("team");
+    let body_content = document.getElementById("teams");
     body_content.innerHTML = teamHTML;
-
   });
 }
 
@@ -485,8 +497,6 @@ function getCompetitionInfo() {
             teams.innerHTML = competitionHTML;
           });
         }
-
-
       });
   }
 
@@ -575,5 +585,4 @@ function getCompetitionInfo() {
       let body_content = document.getElementById("teams");
       body_content.innerHTML = competitionHTML;
     });
-
 }
