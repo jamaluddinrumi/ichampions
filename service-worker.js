@@ -15,7 +15,6 @@ let urlsToCache = [
   "/js/db.js",
   "/js/nav.js",
   "/js/api.js",
-  "/favicon.ico",
   "/icon.png",
   "/img/ucl-bg-header.jpg",
   "/img/notification.png",
