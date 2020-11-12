@@ -1,4 +1,4 @@
-let base_url = "https://api.football-data.org/v2/";
+const base_url = "https://api.football-data.org/v2/";
 const API_KEY = "de8dfc6cf270480287d33652b602510b";
 const preloader = `
 <div class="col s12 flex justify-center my-8">
@@ -17,6 +17,7 @@ const preloader = `
   </div>
 </div>
 `;
+const team_no_image = "https://via.placeholder.com/266?text=No+Image";
 
 document.addEventListener("DOMContentLoaded", function () {
   M.AutoInit();
@@ -58,7 +59,7 @@ function getTeams() {
                         <img src="${
                           team.crestUrl
                             ? team.crestUrl
-                            : "https://via.placeholder.com/266?text=No+Image"
+                            : team_no_image
                         }" alt="${team.name} logo" />
                       </div>
                     </a>
@@ -100,7 +101,7 @@ function getTeams() {
                   <img src="${
                     team.crestUrl
                       ? team.crestUrl
-                      : "https://via.placeholder.com/266?text=No+Image"
+                      : team_no_image
                   }" alt="${team.name} logo" />
                 </div>
               </a>
@@ -140,7 +141,7 @@ function getTeamById() {
                       <img src="${
                         data.crestUrl
                           ? data.crestUrl
-                          : "https://via.placeholder.com/266?text=No+Image"
+                          : team_no_image
                       }" alt="${data.name} logo"/>
                     </div>
                     <div class="card-content">
@@ -244,7 +245,7 @@ function getTeamById() {
                 <img src="${
                   data.crestUrl
                     ? data.crestUrl
-                    : "https://via.placeholder.com/266?text=No+Image"
+                    : team_no_image
                 }" alt="${data.name} logo" />
               </div>
               <div class="card-content">
@@ -340,7 +341,11 @@ function getSavedTeams() {
                     <div class="card">
                       <a href="./team.html?id=${team.id}&saved=true">
                         <div class="card-image p-4 waves-effect waves-block waves-light">
-                          <img src="${team.crestUrl}" alt="${team.name} logo" />
+                        <img src="${
+                          team.crestUrl
+                            ? team.crestUrl
+                            : team_no_image
+                        }" alt="${team.name} logo" />
                         </div>
                       </a>
                       <div class="card-content">
@@ -370,7 +375,7 @@ function getSavedTeamById() {
                       <img src="${
                         data.crestUrl
                           ? data.crestUrl
-                          : "https://via.placeholder.com/266?text=No+Image"
+                          : team_no_image
                       }" alt="${data.name} logo" />
                     </div>
                     <div class="card-content">
