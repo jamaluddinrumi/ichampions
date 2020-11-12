@@ -58,6 +58,18 @@
   <script src="/js/api.js"></script>
 
   <script>
+    function urlBase64ToUint8Array(base64String) {
+      const padding = '='.repeat((4 - base64String.length % 4) % 4);
+      const base64 = (base64String + padding)
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+      const rawData = window.atob(base64);
+      const outputArray = new Uint8Array(rawData.length);
+      for (let i = 0; i < rawData.length; ++i) {
+        outputArray[i] = rawData.charCodeAt(i);
+      }
+      return outputArray;
+    }
     // REGISTER SERVICE WORKER
     window.addEventListener("load", function () {
       if ("serviceWorker" in navigator) {
@@ -88,19 +100,6 @@
                     console.error('Tidak dapat melakukan subscribe ', e.message);
                   });
                 });
-              }
-
-              function urlBase64ToUint8Array(base64String) {
-                const padding = '='.repeat((4 - base64String.length % 4) % 4);
-                const base64 = (base64String + padding)
-                  .replace(/-/g, '+')
-                  .replace(/_/g, '/');
-                const rawData = window.atob(base64);
-                const outputArray = new Uint8Array(rawData.length);
-                for (let i = 0; i < rawData.length; ++i) {
-                  outputArray[i] = rawData.charCodeAt(i);
-                }
-                return outputArray;
               }
 
             });
