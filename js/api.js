@@ -27,7 +27,7 @@ function status(response) {
   document.querySelector("#teams").innerHTML = preloader;
 
   if (response.status !== 200) {
-    console.log("Error : " + response.status);
+    console.error(response.status);
     return Promise.reject(new Error(response.statusText));
   } else {
     return Promise.resolve(response);
@@ -39,7 +39,7 @@ function json(response) {
 }
 
 function error(error) {
-  console.log("Error : " + error);
+  console.error(error);
 }
 
 function getTeams() {
@@ -104,95 +104,7 @@ function getTeamById() {
       caches.match(base_url + "teams/" + idParam).then(function (response) {
         if (response) {
           response.json().then(function (data) {
-            document.title = data.name;
-
-            let teamHTML = `
-                <div class="col s12 m6">
-                  <div class="card">
-                    <div class="card-image p-4">
-                      <img src="${
-                        data.crestUrl
-                          ? data.crestUrl
-                          : team_no_image
-                      }" alt="${data.name} logo"/>
-                    </div>
-                    <div class="card-content">
-                      <table>
-                        <tbody>
-                          <tr>
-                            <td>Name</td>
-                            <td>${data.name}</td>
-                          </tr>
-                          <tr>
-                            <td>Address</td>
-                            <td>${data.address}</td>
-                          </tr>
-                          <tr>
-                            <td>Email</td>
-                            <td><a href="mailto:${data.email}">${
-              data.email
-            }</a></td>
-                          </tr>
-                          <tr>
-                            <td>Phone</td>
-                            <td>${data.address}</td>
-                          </tr>
-                          <tr>
-                            <td>Short Name</td>
-                            <td>${data.shortName}</td>
-                          </tr>
-                          <tr>
-                            <td>Club Colors</td>
-                            <td>${data.clubColors}</td>
-                          </tr>
-                          <tr>
-                            <td>Tla</td>
-                            <td>${data.tla}</td>
-                          </tr>
-                          <tr>
-                            <td>Venue</td>
-                            <td>${data.venue}</td>
-                          </tr>
-                          <tr>
-                            <td>Website</td>
-                            <td><a href="${data.website}">${
-              data.website
-            }</a></td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-          `;
-            teamHTML += `
-          <div class="col s12 m6">
-            <div class="card">
-
-              <div class="card-content">
-                <div class="card-title">
-                Squad
-              </div>
-              <table>
-                  <tbody>
-          `;
-            data.squad.forEach(function (player) {
-              teamHTML += `
-              <tr>
-                <td>${player.position}</td>
-                <td>${player.name}</td>
-              </tr>
-            `;
-            });
-            teamHTML += `
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          `;
-            document.getElementById("teams").innerHTML = teamHTML;
-
+            showTeamDetail(data);
             resolve(data);
           });
         }
@@ -208,102 +120,15 @@ function getTeamById() {
       .then(status)
       .then(json)
       .then(function (data) {
-        document.title = data.name;
-
-        let teamHTML = `
-        <div class="col s12 m6">
-            <div class="card">
-              <div class="card-image p-4">
-                <img src="${
-                  data.crestUrl
-                    ? data.crestUrl
-                    : team_no_image
-                }" alt="${data.name} logo" />
-              </div>
-              <div class="card-content">
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>Name</td>
-                      <td>${data.name}</td>
-                    </tr>
-                    <tr>
-                      <td>Address</td>
-                      <td>${data.address}</td>
-                    </tr>
-                    <tr>
-                      <td>Email</td>
-                      <td><a href="mailto:${data.email}">${data.email}</a></td>
-                    </tr>
-                    <tr>
-                      <td>Phone</td>
-                      <td>${data.address}</td>
-                    </tr>
-                    <tr>
-                      <td>Short Name</td>
-                      <td>${data.shortName}</td>
-                    </tr>
-                    <tr>
-                      <td>Club Colors</td>
-                      <td>${data.clubColors}</td>
-                    </tr>
-                    <tr>
-                      <td>Tla</td>
-                      <td>${data.tla}</td>
-                    </tr>
-                    <tr>
-                      <td>Venue</td>
-                      <td>${data.venue}</td>
-                    </tr>
-                    <tr>
-                      <td>Website</td>
-                      <td><a href="${data.website}">${data.website}</a></td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        `;
-        teamHTML += `
-          <div class="col s12 m6">
-            <div class="card">
-
-              <div class="card-content">
-                <div class="card-title">
-                Squad
-              </div>
-              <table>
-                  <tbody>
-          `;
-        data.squad.forEach(function (player) {
-          teamHTML += `
-              <tr>
-                <td>${player.position}</td>
-                <td>${player.name}</td>
-              </tr>
-            `;
-        });
-        teamHTML += `
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-          `;
-        let body_content = document.getElementById("teams");
-        body_content.innerHTML = teamHTML;
-
-        document.title = data.name;
-
+        showTeamDetail(data);
         resolve(data);
       });
   });
 }
 
 function getSavedTeams() {
-  let teamsHTML = "";
   getAll().then(function (teams) {
+    let teamsHTML = '';
     if (teams.length === 0) {
       teamsHTML = `<div class="p-6 text-center"><i class="large material-icons">sentiment_very_dissatisfied</i><p>ups, you still don't have any fav teams. Add one now!</p></div>`;
     } else {
@@ -338,96 +163,100 @@ function getSavedTeamById() {
   let idParam = urlParams.get("id");
 
   getById(idParam).then(function (data) {
-    document.title = data.name;
+    showTeamDetail(data)
+  });
+}
 
-    let teamHTML = `
-                <div class="col s12 m6">
-                  <div class="card">
-                    <div class="card-image p-4">
-                      <img src="${
-                        data.crestUrl
-                          ? data.crestUrl
-                          : team_no_image
-                      }" alt="${data.name} logo" />
-                    </div>
-                    <div class="card-content">
-                      <table>
-                        <tbody>
-                          <tr>
-                            <td>Name</td>
-                            <td>${data.name}</td>
-                          </tr>
-                          <tr>
-                            <td>Address</td>
-                            <td>${data.address}</td>
-                          </tr>
-                          <tr>
-                            <td>Email</td>
-                            <td><a href="mailto:${data.email}">${
-      data.email
-    }</a></td>
-                          </tr>
-                          <tr>
-                            <td>Phone</td>
-                            <td>${data.address}</td>
-                          </tr>
-                          <tr>
-                            <td>Short Name</td>
-                            <td>${data.shortName}</td>
-                          </tr>
-                          <tr>
-                            <td>Club Colors</td>
-                            <td>${data.clubColors}</td>
-                          </tr>
-                          <tr>
-                            <td>Tla</td>
-                            <td>${data.tla}</td>
-                          </tr>
-                          <tr>
-                            <td>Venue</td>
-                            <td>${data.venue}</td>
-                          </tr>
-                          <tr>
-                            <td>Website</td>
-                            <td><a href="${data.website}">${
-      data.website
-    }</a></td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
+function showTeamDetail(data) {
+  document.title = data.name;
+
+  let teamHTML = `
+              <div class="col s12 m6">
+                <div class="card">
+                  <div class="card-image p-4">
+                    <img src="${
+                      data.crestUrl
+                        ? data.crestUrl
+                        : team_no_image
+                    }" alt="${data.name} logo" />
+                  </div>
+                  <div class="card-content">
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td>Name</td>
+                          <td>${data.name}</td>
+                        </tr>
+                        <tr>
+                          <td>Address</td>
+                          <td>${data.address}</td>
+                        </tr>
+                        <tr>
+                          <td>Email</td>
+                          <td><a href="mailto:${data.email}">${
+    data.email
+  }</a></td>
+                        </tr>
+                        <tr>
+                          <td>Phone</td>
+                          <td>${data.address}</td>
+                        </tr>
+                        <tr>
+                          <td>Short Name</td>
+                          <td>${data.shortName}</td>
+                        </tr>
+                        <tr>
+                          <td>Club Colors</td>
+                          <td>${data.clubColors}</td>
+                        </tr>
+                        <tr>
+                          <td>Tla</td>
+                          <td>${data.tla}</td>
+                        </tr>
+                        <tr>
+                          <td>Venue</td>
+                          <td>${data.venue}</td>
+                        </tr>
+                        <tr>
+                          <td>Website</td>
+                          <td><a href="${data.website}">${
+    data.website
+  }</a></td>
+                        </tr>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
-          `;
-    teamHTML += `
-          <div class="col s12 m6">
-            <div class="card">
+              </div>
+        `;
+  teamHTML += `
+        <div class="col s12 m6">
+          <div class="card">
 
-              <div class="card-content">
-                <div class="card-title">
-                Squad
-              </div>
-              <table>
-                  <tbody>
-          `;
-    data.squad.forEach(function (player) {
-      teamHTML += `
-              <tr>
-                <td>${player.position}</td>
-                <td>${player.name}</td>
-              </tr>
-            `;
-    });
+            <div class="card-content">
+              <div class="card-title">
+              Squad
+            </div>
+            <table>
+                <tbody>
+        `;
+  data.squad.forEach(function (player) {
     teamHTML += `
-                  </tbody>
-                </table>
-              </div>
+            <tr>
+              <td>${player.position}</td>
+              <td>${player.name}</td>
+            </tr>
+          `;
+  });
+  teamHTML += `
+                </tbody>
+              </table>
             </div>
           </div>
-          `;
-    let body_content = document.getElementById("teams");
-    body_content.innerHTML = teamHTML;
-  });
+        </div>
+        `;
+  let body_content = document.getElementById("teams");
+  body_content.innerHTML = teamHTML;
 }
 
 function getCompetitionInfo() {
@@ -435,44 +264,7 @@ function getCompetitionInfo() {
     caches
       .match(base_url + "competitions/2001/teams")
       .then(function (response) {
-        if (response) {
-          response.json().then(function (data) {
-            let competition = data.competition;
-            let competitionHTML = `
-                      <div class="col s12 m3">
-                        <div class="card">
-                          <div class="card-image waves-effect waves-block waves-light p-4">
-                            <img src="img/UEFA_Champions_League_logo_2.svg"/>
-                          </div>
-                          <div class="card-content">
-                            <table>
-                              <tbody>
-                                <tr>
-                                  <td>Name</td>
-                                  <td>${competition.name}</td>
-                                </tr>
-                                <tr>
-                                  <td>Area</td>
-                                  <td>${competition.area.name}</td>
-                                </tr>
-                                <tr>
-                                  <td>Code</td>
-                                  <td>${competition.code}</td>
-                                </tr>
-                                <tr>
-                                  <td>Participants</td>
-                                  <td>${data.count}</td>
-                                </tr>
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
-                `;
-            let teams = document.getElementById("teams");
-            teams.innerHTML = competitionHTML;
-          });
-        }
+        if (response) response.json().then(showCompetitionDetail);
       });
   }
 
