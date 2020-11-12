@@ -48,37 +48,7 @@ function getTeams() {
       .match(base_url + "competitions/2001/teams")
       .then(function (response) {
         let teamsHTML = "";
-        if (response) {
-          response.json().then(function (data) {
-            data.teams.forEach(function (team) {
-              teamsHTML += `
-                <div class="col s6 m4">
-                  <div class="card">
-                    <a href="./team.html?id=${team.id}" class="team-card-link">
-                      <div class="card-image p-4 waves-effect waves-block waves-light">
-                        <img src="${
-                          team.crestUrl
-                            ? team.crestUrl
-                            : team_no_image
-                        }" alt="${team.name} logo" />
-                      </div>
-                    </a>
-                    <div class="card-content">
-                      <a href="./team.html?id=${team.id}">
-                        <span class="card-title truncate font-bold">${
-                          team.name
-                        }</span>
-                      </a>
-                      <p class="italic text-opacity-50">${team.founded}</p>
-                    </div>
-                  </div>
-                </div>
-              `;
-            });
-            let teams = document.getElementById("teams");
-            teams.innerHTML = teamsHTML;
-          });
-        }
+        if (response) response.json().then(showAllTeams);
       });
   }
 
@@ -90,37 +60,39 @@ function getTeams() {
   })
     .then(status)
     .then(json)
-    .then(function (data) {
-      let teamsHTML = "";
-      data.teams.forEach(function (team) {
-        teamsHTML += `
-          <div class="col s6 m4">
-            <div class="card">
-              <a href="./team.html?id=${team.id}" class="team-card-link">
-                <div class="card-image p-4 waves-effect waves-block waves-light">
-                  <img src="${
-                    team.crestUrl
-                      ? team.crestUrl
-                      : team_no_image
-                  }" alt="${team.name} logo" />
-                </div>
-              </a>
-              <div class="card-content">
-                <a href="./team.html?id=${team.id}">
-                  <span class="card-title truncate font-bold">${
-                    team.name
-                  }</span>
-                </a>
-                <p class="italic text-opacity-50">${team.founded}</p>
-              </div>
-            </div>
-          </div>
-        `;
-      });
-      let teams = document.getElementById("teams");
-      teams.innerHTML = teamsHTML;
-    })
+    .then(showAllTeams)
     .catch(error);
+}
+
+function showAllTeams(data) {
+  let teamsHTML = '';
+  data.teams.forEach(function (team) {
+    teamsHTML += `
+      <div class="col s6 m4">
+        <div class="card">
+          <a href="./team.html?id=${team.id}" class="team-card-link">
+            <div class="card-image p-4 waves-effect waves-block waves-light">
+              <img src="${
+                team.crestUrl
+                  ? team.crestUrl
+                  : team_no_image
+              }" alt="${team.name} logo" />
+            </div>
+          </a>
+          <div class="card-content">
+            <a href="./team.html?id=${team.id}">
+              <span class="card-title truncate font-bold">${
+                team.name
+              }</span>
+            </a>
+            <p class="italic text-opacity-50">${team.founded}</p>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  let teams = document.getElementById("teams");
+  teams.innerHTML = teamsHTML;
 }
 
 function getTeamById() {
