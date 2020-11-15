@@ -24,10 +24,8 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function urlBase64ToUint8Array(base64String) {
-  const padding = '='.repeat((4 - base64String.length % 4) % 4);
-  const base64 = (base64String + padding)
-    .replace(/-/g, '+')
-    .replace(/_/g, '/');
+  const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+  const base64 = (base64String + padding).replace(/-/g, "+").replace(/_/g, "/");
   const rawData = window.atob(base64);
   const outputArray = new Uint8Array(rawData.length);
   for (let i = 0; i < rawData.length; ++i) {
@@ -119,7 +117,8 @@ function getSavedTeams() {
   getAll().then(function (teams) {
     let teamsHTML = "";
     if (teams.length === 0) {
-      teamsHTML = `<div class="p-6 text-center"><i class="large material-icons">sentiment_very_dissatisfied</i><p>ups, you still don't have any fav teams. Add one now!</p></div>`;
+      teamsHTML = `<div class="p-6 text-center"><i class="large material-icons">sentiment_very_dissatisfied</i><p>ups, you still don't have any fav teams. Add one now!</p><a href="/" class="waves-effect waves-light btn indigo darken-4 mt-4 mb-10 btn-large"><i class="material-icons">arrow_back</i><span class="inline-block align-middle ml-2 pb-5">select a favorite team</span>
+    </a></div>`;
     } else {
       teams.forEach(function (team) {
         teamsHTML += `
