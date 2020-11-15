@@ -43,15 +43,6 @@ function error(error) {
 }
 
 function getTeams() {
-  if ("caches" in window) {
-    caches
-      .match(base_url + "competitions/2001/teams")
-      .then(function (response) {
-        let teamsHTML = "";
-        if (response) response.json().then(showAllTeams);
-      });
-  }
-
   fetch(base_url + "competitions/2001/teams", {
     method: "POST",
     headers: {
@@ -65,7 +56,7 @@ function getTeams() {
 }
 
 function showAllTeams(data) {
-  let teamsHTML = '';
+  let teamsHTML = "";
   data.teams.forEach(function (team) {
     teamsHTML += `
       <div class="col s6 m4">
@@ -73,17 +64,13 @@ function showAllTeams(data) {
           <a href="./team.html?id=${team.id}" class="team-card-link">
             <div class="card-image p-4 waves-effect waves-block waves-light">
               <img src="${
-                team.crestUrl
-                  ? team.crestUrl
-                  : team_no_image
+                team.crestUrl ? team.crestUrl : team_no_image
               }" alt="${team.name} logo" />
             </div>
           </a>
           <div class="card-content">
             <a href="./team.html?id=${team.id}">
-              <span class="card-title truncate font-bold">${
-                team.name
-              }</span>
+              <span class="card-title truncate font-bold">${team.name}</span>
             </a>
             <p class="italic text-opacity-50">${team.founded}</p>
           </div>
@@ -99,17 +86,6 @@ function getTeamById() {
   return new Promise(function (resolve, reject) {
     let urlParams = new URLSearchParams(window.location.search);
     let idParam = urlParams.get("id");
-
-    if ("caches" in window) {
-      caches.match(base_url + "teams/" + idParam).then(function (response) {
-        if (response) {
-          response.json().then(function (data) {
-            showTeamDetail(data);
-            resolve(data);
-          });
-        }
-      });
-    }
 
     fetch(base_url + "teams/" + idParam, {
       method: "POST",
@@ -128,7 +104,7 @@ function getTeamById() {
 
 function getSavedTeams() {
   getAll().then(function (teams) {
-    let teamsHTML = '';
+    let teamsHTML = "";
     if (teams.length === 0) {
       teamsHTML = `<div class="p-6 text-center"><i class="large material-icons">sentiment_very_dissatisfied</i><p>ups, you still don't have any fav teams. Add one now!</p></div>`;
     } else {
@@ -139,9 +115,7 @@ function getSavedTeams() {
                       <a href="./team.html?id=${team.id}&saved=true">
                         <div class="card-image p-4 waves-effect waves-block waves-light">
                         <img src="${
-                          team.crestUrl
-                            ? team.crestUrl
-                            : team_no_image
+                          team.crestUrl ? team.crestUrl : team_no_image
                         }" alt="${team.name} logo" />
                         </div>
                       </a>
@@ -163,7 +137,7 @@ function getSavedTeamById() {
   let idParam = urlParams.get("id");
 
   getById(idParam).then(function (data) {
-    showTeamDetail(data)
+    showTeamDetail(data);
   });
 }
 
@@ -175,9 +149,7 @@ function showTeamDetail(data) {
                 <div class="card">
                   <div class="card-image p-4">
                     <img src="${
-                      data.crestUrl
-                        ? data.crestUrl
-                        : team_no_image
+                      data.crestUrl ? data.crestUrl : team_no_image
                     }" alt="${data.name} logo" />
                   </div>
                   <div class="card-content">
@@ -219,9 +191,7 @@ function showTeamDetail(data) {
                         </tr>
                         <tr>
                           <td>Website</td>
-                          <td><a href="${data.website}">${
-    data.website
-  }</a></td>
+                          <td><a href="${data.website}">${data.website}</a></td>
                         </tr>
                       </tbody>
                     </table>
@@ -260,14 +230,6 @@ function showTeamDetail(data) {
 }
 
 function getCompetitionInfo() {
-  if ("caches" in window) {
-    caches
-      .match(base_url + "competitions/2001/teams")
-      .then(function (response) {
-        if (response) response.json().then(showCompetitionDetail);
-      });
-  }
-
   fetch(base_url + "competitions/2001/teams", {
     method: "POST",
     headers: {
