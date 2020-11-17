@@ -89,3 +89,19 @@ workbox.routing.registerRoute(
     ],
   })
 );
+
+workbox.routing.registerRoute(
+  new RegExp("https://api.football-data.org/v2/"),
+  workbox.strategies.staleWhileRevalidate({
+    cacheName: "football-api",
+    plugins: [
+      new workbox.cacheableResponse.Plugin({
+        statuses: [200],
+      }),
+      new workbox.expiration.Plugin({
+        maxAgeSeconds: 60 * 60 * 24 * 365,
+        maxEntries: 30,
+      }),
+    ],
+  })
+);
